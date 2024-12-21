@@ -18,42 +18,218 @@ icon: docker
 > * data center VMs, or&#x20;
 > * the cloud
 
-end to end application stack&#x20;
 
-* web server - node js &#x20;
-* database - MongoDB&#x20;
-* messaging system - redis
-* orchestration tool - Ansible.&#x20;
 
-#### Note: Introduction to Docker
+## Why Docker?
 
-* **Why Docker?**\
-  Docker addresses challenges like compatibility issues, environment setup, and resource efficiency. Traditional methods often struggle with:
-  * Compatibility between services, libraries, and OS versions.
-  * Tedious environment setup for new developers.
-  * Inconsistent application behavior across development, testing, and production environments.
-* **What is Docker?**
-  * Docker isolates application components in containers, each with its own libraries and dependencies.
-  * Containers share the OS kernel but remain lightweight and resource-efficient compared to virtual machines (VMs).
-* **Benefits of Docker**
-  * **Simplified setup:** A single Docker configuration allows developers to start with a simple `docker run` command.
-  * **Portability:** Applications run consistently across different environments.
-  * **Efficiency:** Containers are lightweight (MBs vs. GBs for VMs) and boot up quickly (seconds vs. minutes for VMs).
-* **Containers vs. Virtual Machines**
-  * Containers share the OS kernel, whereas VMs have separate OSs, leading to better resource efficiency.
-  * Containers are less isolated but more lightweight.
-  * VMs provide full OS virtualization but consume more resources.
-  * Containers and VMs can complement each other, with containers deployed on virtualized hosts for scalability.
-* **Images and Containers**
-  * **Images:** Templates for creating containers (e.g., preconfigured application environments).
-  * **Containers:** Running instances of images with isolated environments.
-* **DevOps Integration**
-  * Developers and Ops teams collaborate to create a DockerFile that defines application setup.
-  * Images built from the DockerFile ensure consistent behavior across all environments.
-* **Key Takeaway**\
-  Docker simplifies application deployment, fosters collaboration in DevOps, and ensures consistent and scalable application environments.
+<figure><img src=".gitbook/assets/matrix-hell2.png" alt="" width="375"><figcaption><p>End to end application stack - causing a matrix from hell</p></figcaption></figure>
 
-We're going to start by looking at a high level overview on why you need docker and what it can do for you. Let me start by sharing how I got introduced to Docker. In one of my previous projects, I had this requirement to set up an end to end application stack including various different technologies like a web server using node js and a database such as MongoDB, and a messaging system like redis, and an orchestration tool like Ansible. We had a lot of issues developing this application stack with all these different components. First of all, their compatibility with the underlying OS was an issue. We had to ensure that all these different services were compatible with the version of OS we were planning to use. There have been times when certain version of these services were not compatible with the OS, and we've had to go back and look at different OS that was compatible with all of these different services. Secondly, we had to check the compatibility between these services and the libraries and dependencies on the OS. We've had issues where one service requires one version of a dependent library, whereas another service requires another version. The architecture of our application changed over time. We've had to upgrade to newer versions of these components or change the database, etcetera. And every time something changed, we had to go through the same process of checking compatibility between these various components and the underlying infrastructure. This compatibility metrics issue is usually referred to as the matrix from hell. Next every time we had a new developer on board, we found it really difficult to set up a new environment. The new developers had to follow a large set of instructions and run hundreds of commands to finally set up their environments. They had to make sure they were using the right operating system, the right versions of each of these components, and each developer had to set all that up by himself each time. We also had different development, test and production environments. One developer may be comfortable using one OS and the others may be comfortable using another one. And so we couldn't guarantee that the application that we were building would run the same way in different environments. And so all of this made our life in developing, building and shipping the application really difficult. So I needed something that could help us with the compatibility issue and something that will allow us to modify or change these components without affecting the other components, and even modify the underlying operating systems as required. And that search landed me on Docker. With Docker I was able to run each component in a separate container with its own dependencies and its own libraries, all on the same VM and the OS, but within separate environments or containers. We just had to build the Docker configuration once and all our developers could now get started with a simple Docker run command, irrespective of what the underlying operating system they run. All they needed to do was to make sure they had Docker installed on their systems. So what are containers? Containers are completely isolated environments, as in they can have their own processes or services, their own network interfaces, their own mounts, just like virtual machines, except they all share the same OS kernel. We will look at what that means in a bit, but it's also important to note that containers are not new with Docker. Containers have existed for about ten years now, and some of the different types of containers are LXC, LXD, lxcfs, etcetera. Docker utilizes LXC containers. Setting up these container environments is hard as they are very low level. And that is where Docker offers a high level tool with several powerful functionalities, making it really easy for end users like us to understand how docker works. Let us revisit some basic concepts of operating systems first. If you look at operating systems like Ubuntu, Fedora, SUSE, or CentoS, they all consist of two things, an OS kernel and a set of software. The OS kernel is responsible for interacting with the underlying hardware, while the OS kernel remains the same, which is Linux in this case, it's the software above it that makes these operating systems different. This software may consist of a different user interface, drivers, compilers, file managers, developer tools, etcetera. So you have a common Linux kernel shared across all OSs and some custom software that differentiate operating systems from each other. We said earlier that Docker containers share the underlying kernel. So what does that actually mean, sharing the kernel? Let's say we have a system with an Ubuntu OS with Docker installed on it. Docker can run any flavor of OS on top of it as long as they are all based on the same kernel, in this case Linux. If the underlying OS is Ubuntu, Docker can run a container based on another distribution like Debian, fedora, SUSE or CentOS. Each Docker container only has the additional software that we just talked about in the previous slide that makes these operating systems different. And Docker utilizes the underlying kernel of the docker host, which works with all OSs above. So what is an os that do not share the same kernel as this? Windows, and so you won't be able to run a Windows based container on a docker host with Linux on it. For that, you will require Docker on a Windows server. Now it is when I say this that most of my students go hey, hold on there, that's not true. And they install Docker on Windows, run a container based on Linux and go see, it's possible. Well, when you install Docker on Windows and run a Linux container on Windows, you're not really running a Linux container on Windows. Windows runs a Linux container on a Linux virtual machine under the hoods. So it's really Linux container on Linux virtual machine on Windows. We discuss more about this on the Docker on Windows or Mac later during this course. Now you might ask, isn't that a disadvantage then not being able to run another kernel on the OS? The answer is no, because unlike hypervisors, Docker is not meant to virtualize and run different operating systems and kernels on the same hardware. The main purpose of Docker is to package and containerize applications, and to ship them and to run them anywhere, anytime, as many times as you want. So that brings us to the differences between virtual machines and containers, something that we tend to do, especially those from a virtualization background. As you can see on the right, in case of Docker, we have the underlying hardware infrastructure and then the OS and then Docker installed on the OS. Docker then manages the containers that run with libraries and dependencies alone. In case of virtual machines, we have the hypervisor like ESX on the hardware and then the virtual machines on them. As you can see, each virtual machine has its own os inside it, then the dependencies and then the application. The overhead causes higher utilization of underlying resources as there are multiple virtual operating systems and kernels running. The virtual machines also consume higher disk space as HVM is heavy and is usually in gigabytes in size, whereas docker containers are lightweight and are usually in megabytes in size. This allows Docker containers to boot up faster, usually in a matter of seconds, whereas VMs, as we know, takes minutes to boot up as it needs to boot up the entire operating system. It is also important to note that Docker has less isolation as more resources are shared between the containers like the kernel, whereas VMs have complete isolation from each other. Since VMs don't rely on the underlying OS or kernel, you can run different types of applications built on different OSs, such as Linux based or Windows based apps on the same hypervisor. So those are some differences between the two. Now, having said that, it's not an either container or virtual machine situation, it's containers and virtual machines. Now, when you have large environments with thousands of application containers running on thousands of Docker hosts, you will often see containers provisioned on virtual Docker hosts. That way we can utilize the advantages of both technologies. We can use the benefits of virtualization to easily provision or decommission Docker hosts as required. At the same time, make use of the benefits of Docker to easily provision applications and quickly scale them as required. But remember that in this case we will not be provisioning that many virtual machines as we used to before, because earlier we provisioned a virtual machine for each application. Now you might provision a virtual machine for hundreds or thousands of containers. So how is it done? There are lots of containerized versions of applications readily available as of today, so most organizations have their products containerized and available in a public Docker repository called Docker hub or Docker store. For example, you can find images of most common operating systems, databases, and other services and tools. Once you identify the images you need, and you install Docker on your host, bringing up an application is as easy as running a docker run command with the name of the image. In this case, running a docker run Ansible command will run an instance of Ansible on the Docker host. Similarly, run an instance of MongoDB, Redis and Node.js using the docker run command. If you need to run multiple instances of the web service, simply add as many instances as you need and configure a load balancer of some kind in the front. In case one of the instances were to fail, simply destroy that instance and launch a new one. There are other solutions available for handling such cases that we will look at later during this course, and for now, don't focus too much on the commands. We will get to that in a bit. We've been talking about images and containers. Let's understand the difference between the two. An image is a package or a template, just like a VM template that you might have worked with in the virtualization world. It is used to create one or more containers. Containers are running instances of images that are isolated and have their own environments and set of processes. As we have seen before, a lot of products have been dockerized already. In case you cannot find what you're looking for you could create your own image and push it to Docker hub repository, making it available for public. So if you look at it traditionally, developers developed applications, then they hand it over to Ops team to deploy and manage it in production environments. They do that by providing a set of instructions, such as information about how the host must be set up. What prerequisites are to be installed on the host and how the dependencies are to be configured etcetera. Since the Ops team did not really develop the application on their own, they struggle with setting it up. When they hit an issue they work with the developers to resolve it. With Docker, the developers and operations teams work hand in hand to transform the guide into a DockerFile with both of their requirements. This DockerFile is then used to create an image for their applications. This image can now run on any host with Docker installed on it and is guaranteed to run the same way everywhere. So the Ops team can now simply use the image to deploy the application since the image was already working when the developer built it and operations have not modified it. It continues to work the same way when deployed in production and that's one example of how a tool like Docker contributes to the DevOps culture. Well that's it for now and in the upcoming lecture we will look at how to get started with Docker.
+Traditional methods often struggle with:
+
+* Compatibility between services, libraries, and OS versions
+  * services and underlying OS and OS version
+  * services and libraries and dependencies&#x20;
+  * services and  different versions of dependent libraries
+* Changes over time
+  * e.g:&#x20;
+    * changes to application architecture
+    * version upgrades of different components
+  * Compatibility between components and the underlying infrastructure must be verified whenever any of them undergoes a change.&#x20;
+* Tedious environment setup for new developers
+* Inconsistent application behavior across development, testing, and production environments
 
 
 
+╰**---**➤ Difficulty in developing, building and shipping the application due to compatibility issues
+
+
+
+{% hint style="success" %}
+Docker addresses challenges like&#x20;
+
+* **compatibility/ dependency** issues,&#x20;
+* **environment setup**, and&#x20;
+* **resource efficiency**.&#x20;
+{% endhint %}
+
+\
+
+
+## What is Docker?
+
+> * **Containerize applications**
+>   * Purpos&#x65;**:**&#x20;
+>     * package and containerize applications
+>     * ship them&#x20;
+>     * run them anywhere, anytime, as many times as you want
+> * Run each service with its own dependencies in separate containers,&#x20;
+>   * all on the same VM and the OS
+>   * but within separate environments/containers
+
+<figure><img src=".gitbook/assets/with-docker.png" alt="" width="563"><figcaption><p>With Docker</p></figcaption></figure>
+
+## Benefits of Docker
+
+* **Flexible Component Modification:** allows to modify/change components (even the underlying operating systems) as required, without affecting  other components&#x20;
+* **Simplified setup:** A single Docker configuration (build once and for all) allows developers to start with a simple `docker run` command, irrespective of the underlying operating system they run.
+  * They only need to have docker installed.
+* **Portability:** Applications run consistently across different environments.
+* **Efficiency:** Containers are lightweight (MBs vs. GBs for VMs) and boot up quickly (seconds vs. minutes for VMs).
+
+{% hint style="info" %}
+Containers are more lightweight and resource-efficient compared to virtual machines (VMs).
+{% endhint %}
+
+
+
+## Containers
+
+> **Containers**:
+>
+> * completely isolated environments
+>   * can have their own&#x20;
+>     * processes/ services,&#x20;
+>     * network interfaces
+>     * mounts
+> * like virtual machines, except they all share the same OS kernel
+
+<figure><img src=".gitbook/assets/containers.png" alt="" width="563"><figcaption><p>Containers</p></figcaption></figure>
+
+***
+
+{% hint style="info" %}
+**Containers are not new with Docker**
+{% endhint %}
+
+* some of the different types of containers: `LXC`, `LXD`, `LXCFS`
+  * These are very low level and setting these container environments is hard
+* Docker utilizes `LXC` containers and offers a high level tool with many powerful functionalities&#x20;
+
+***
+
+
+
+OS[^1] consists of 2 things&#x20;
+
+1. [**OS Kernel**](#user-content-fn-2)[^2]: responsible for interacting with the underlying hardware
+2. **Set of Software**: may consists of different user interfaces, drivers, compilers, file managers, developer tools, etc.
+
+{% hint style="success" %}
+The **OS kernel** remains same across different operating systems. It's the **software** above the kernel that differentiates them.&#x20;
+{% endhint %}
+
+e.g: a **common Linux kernel** is shared across various Linux-based OSs; custom software above it makes each OS unique
+
+<figure><img src=".gitbook/assets/OS-kernal-n-software.png" alt="" width="563"><figcaption></figcaption></figure>
+
+***
+
+{% hint style="info" %}
+Docker containers **share the underlying OS kernel**.&#x20;
+{% endhint %}
+
+* **`Docker`**, installed on an **`Ubuntu`** system, can run containers from any Linux distribution (e.g., Debian, Fedora, SUSE, CentOS), as long as they share the same Linux kernel.
+  * Here, Docker uses the **Linux kernel** of the Docker host and each Docker container only has the additional software to create unique OSes.
+
+<figure><img src=".gitbook/assets/docker-containers-n-oses.png" alt="" width="563"><figcaption></figcaption></figure>
+
+* However, Docker, installed on an Ubuntu system, cannot run Windows-based containers, as Windows uses a different kernel.
+  * To run a Windows container, Docker on a Windows server is required.
+* When running a Linux container with Docker installed on Windows,&#x20;
+  * Docker actually runs the container on a **Linux virtual machine** under the hood, not directly on Windows.
+
+***
+
+{% hint style="success" %}
+Docker's **inability** **to run a different kernel on the host** operating system is **not a disadvantage**.
+{% endhint %}
+
+* **unlike** **`hypervisors`**, Docker is not meant to virtualize and run different operating systems and kernels on the same hardware.&#x20;
+* Purpose of docker is to package and containerize applications so that they can be shipped and run anywhere anytime.
+
+## Docker Containers vs. Virtual Machines
+
+<figure><img src=".gitbook/assets/docker-vs-vm.png" alt="" width="563"><figcaption><p>VM vs Docker</p></figcaption></figure>
+
+
+
+|                                                                                                                 VM                                                                                                                 |                                                   Docker                                                   |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
+| <p><code>Have separate OSs</code></p><p>Overhead causes <strong>higher utilization</strong> of underlying <strong>resources</strong><br><strong>-</strong> as there are multiple virtual operating systems and kernels running</p> | <p><code>Share the OS kernel</code></p><p>Have better <strong>resource efficiency</strong><br><br><br></p> |
+|                                                                                 <p>HVM consume higher disk space<br><strong>GB</strong> in size</p>                                                                                |              <p>Containers are <strong>lightweight</strong><br><strong>MB</strong> in size</p>             |
+|                                                                               <p>takes minutes to boot up <br>- since entire OS should be boot up</p>                                                                              |                     <p>can boot up faster (in seconds)<br>- since it's lightweight</p>                     |
+|                                                         <p>completely isolated<br>can run different types of applications built on different OSs on the same hypervisor</p>                                                        |          <p>less isolated<br>more resources are shared between the containers like the kernel</p>          |
+
+{% hint style="info" %}
+**VMs** provide **full OS virtualization** but consume **more resources**.
+{% endhint %}
+
+
+
+## Containers provisioned on virtual Docker hosts
+
+{% hint style="success" %}
+**Containers and VMs can complement each other**,&#x20;
+
+with containers deployed on virtualized hosts for scalability.
+{% endhint %}
+
+<figure><img src=".gitbook/assets/vm-compliments-docker-containers.png" alt="" width="563"><figcaption><p><strong>Containers and VMs can complement each other</strong></p></figcaption></figure>
+
+
+
+Containers provisioned on virtual Docker hosts
+
+* utilize the advantages of both technologies
+  * benefits of **virtualization**&#x20;
+    * to easily provision or decommission Docker hosts as required
+  * benefits of **Docker**&#x20;
+    * to easily provision applications and quickly scale them as required
+  * In this case, number of VMs provisioned are lesser than usual
+    * usual: VM for each application
+    * in this case: VM for 100's 1000's of containers with containerized applications
+
+
+
+{% hint style="info" %}
+Most organizations have their products containerized and available in a p**ublic Docker repository** called `DockerHub` or `Docker Store`.&#x20;
+{% endhint %}
+
+
+
+## Images and Containers
+
+> **Images:** Templates for creating containers (e.g., preconfigured application environments).
+>
+> **Containers:** Running instances of images with isolated environments.
+
+<figure><img src=".gitbook/assets/images-vs-containers.png" alt="" width="375"><figcaption><p>Images VS Containers</p></figcaption></figure>
+
+{% hint style="info" %}
+If you can't find the image you are looking for,&#x20;
+
+\--> then you can create your own image and push it to the DockerHub repository.
+{% endhint %}
+
+&#x20;&#x20;
+
+## DevOps Integration
+
+* Developers and Ops teams collaborate to create a DockerFile that defines application setup.
+* Images built from the `DockerFile` ensure consistent behavior across all environments.
+
+\
+
+
+***
+
+LikeDislikeReport an issue\
+
+
+
+
+
+
+[^1]: e.g: Ubuntu, Fedora, SUSE, CentOS, Debian
+
+[^2]: e.g: Linux
