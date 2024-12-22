@@ -19,7 +19,9 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 </code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps
 </code></pre></td><td align="center">Lists all running containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps -a
 </code></pre></td><td align="center">Lists all containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker stop &#x3C;CONTAINER_ID/CONTAINER_NAME>
-</code></pre></td><td align="center">Stops the running container with given container id or name</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker rm &#x3C;CONTAINER_ID/CONTAINER_NAME>>
+</code></pre></td><td align="center">Stops the running container with given container id or name</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker start &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center">Start an exited/stopped container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker restart &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center">Restart a container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker rm &#x3C;CONTAINER_ID/CONTAINER_NAME>>
 </code></pre></td><td align="center">Removes a stopped or existed container permanently</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker images 
 </code></pre></td><td align="center">List of available images</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker rmi &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Remove an image</p><ul><li>Make sure that no containers are running off of the image to be removed. </li><li>All dependent containers must be stopped and deleted to delete an image.</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker pull &#x3C;IMAGE_NAME>
@@ -29,99 +31,21 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 </code></pre></td><td align="center"><p>Execute a command on a running container.</p><pre class="language-sh"><code class="lang-sh">docker exec sad_kirch cat /etc/hosts
 </code></pre><ul><li>view the contents of /etc/hosts file inside a particular running container</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker attach &#x3C;CONTAINER_ID/CONTAINER_NAME>
-</code></pre></td><td align="center">Attach back to a running container in the background</td></tr></tbody></table>
+</code></pre></td><td align="center">Attach back to a running container in the background</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker inspect &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center"><p>Inspect container</p><ul><li><p>shows all details of a container in a <code>JSON</code> format</p><ul><li>state, mounds, configuration data, network settings, etc.</li></ul></li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker logs &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center"><code>Container Logs</code>: View the logs (contents written to the standard out) of a container that is run in the background or a stopped container</td></tr></tbody></table>
 
 ## Flags&#x20;
 
-<table><thead><tr><th width="84" align="center">Flag</th><th width="392" align="center">Explanation</th><th align="center">Example</th></tr></thead><tbody><tr><td align="center">-<strong>d</strong></td><td align="center"><p></p><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul></td><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
+<table><thead><tr><th width="84" align="center">Flag</th><th width="392" align="center">Explanation</th><th align="center">Example</th></tr></thead><tbody><tr><td align="center">-----</td><td align="center"><strong>docker run flags</strong></td><td align="center">-------------------------------------</td></tr><tr><td align="center">-<strong>d</strong></td><td align="center"><p></p><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul></td><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
 </code></pre></td></tr><tr><td align="center">-<strong>it</strong></td><td align="center"><p>Run a container in <strong>interactive mode</strong> with a pseudo-TTY (teletypewriter). </p><ul><li><p><strong><code>-i</code></strong>: read the standard input and provide interactive mode</p><ul><li>Keeps the standard input (stdin) open for the container, allowing interactive communication.</li></ul></li><li><p><strong><code>-t</code></strong>: attach the container's terminal and provides the prompt</p><ul><li>Allocates a pseudo-TTY, which makes the interaction with the container more user-friendly, like a real terminal. </li></ul></li></ul></td><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
 </code></pre><p>starts an Ubuntu container in interactive mode, opening a shell inside the container for user input</p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu bash
 </code></pre><p>runs an Ubuntu container and gives you a Bash shell</p><pre class="language-bash"><code class="lang-bash">docker exec -it &#x3C;CONTAINER_ID> bash
-</code></pre><p>attaches to the shell of an already running container<br></p></td></tr><tr><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table>
+</code></pre><p>attaches to the shell of an already running container<br></p></td></tr><tr><td align="center">-<strong>p</strong></td><td align="center"><strong><code>Port mapping | Port publishing</code></strong>: map internal container ports to the docker host ports</td><td align="center"><pre class="language-bash"><code class="lang-bash"><strong>docker run -p &#x3C;DOCKER_HOST_PORT>:&#x3C;DOCKER_CONTAINER_PORT> &#x3C;DOCKER_IMAGE>
+</strong></code></pre><pre class="language-bash"><code class="lang-bash"><strong>docker run -p 80:3306 mysql
+</strong></code></pre></td></tr><tr><td align="center"><strong>-v</strong></td><td align="center"><strong><code>Volume Mapping</code></strong>:   map directory (data volume) inside the docker container to a directory outside the container on the Docker host (external volume)</td><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker run -v &#x3C;DIRECTORY_INSIDE_CONTAINER>:&#x3C;DIRECTORY_ON_DOCKER_HOST> &#x3C;IMAGE_NAME>
+</code></pre><pre class="language-bash"><code class="lang-bash">docker run -v /opt/datadir:/var/lib/mysql mysql
+</code></pre></td></tr><tr><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table>
 
+**--command**: To run a Docker container with a specific command, this option can be used with `docker run` command
 
-
-## Docker Run
-
-### Tags
-
-> refers to the version of an image
->
-> default tag: `latest`
-
-```bash
-docker run redis
-```
-
-* This pulls the **latest** _redis_ image from the docker registry since the **default tag** is `latest` and run it.
-
-To pull a specific version of _redis_, you need to specify that version as a `tag`.
-
-<pre class="language-bash"><code class="lang-bash">docker run redis:<a data-footnote-ref href="#user-content-fn-1">4.0</a>
-</code></pre>
-
-* This pulls the _redis_ **version 4.0** image from the docker registry and run it.
-
-{% hint style="info" %}
-To find information about available versions/tags of a particular image, look up the image at **`dockerhub.com`**
-
--> There, you will find all the supported tags in its description
-{% endhint %}
-
-
-
-### STDIN - Standard Input
-
-> **By default**, Docker containers **do not listen to standard input** when they are running,&#x20;
->
-> * even though you are attached to the console, it doesn't have a terminal to read inputs from
-> * it run in non-interactive mode
->
->
->
-> **If you want to provide the input,**
->
-> * Then you must map the standard input of your host with **`-i`** flag
-> * To include the prompt as well, you need to attach the container's terminal with **`-t`** flag
-
-|                                                                                                                                                                                                                                                            Examples                                                                                                                                                                                                                                                            |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
-</code></pre><p>starts an Ubuntu container in interactive mode, opening a shell inside the container for user input</p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu bash
-</code></pre><p>runs an Ubuntu container and gives you a Bash shell</p><pre class="language-bash"><code class="lang-bash">docker exec -it &#x3C;CONTAINER_ID> bash
-</code></pre><p>attaches to the shell of an already running container<br></p> |
-
-
-
-### Port Mapping | Port Publishing
-
-`Docker Host` | `Docker Engine`: the underlying host where docker is installed
-
-
-
-When we run a containerized web application we can see the server is running
-
-Say the application is listening on port 5000,&#x20;
-
-Then users can access the application from a web browser by using&#x20;
-
-* port 5000 and
-* either ip address of the docker container&#x20;
-  * every docker container gets an IP assigned by default
-  * this IP is an Internal IP and it's only accessible within the docker host
-  * if you open a browser within the docker host, then you can access it with internal IP
-* but users outside the docker host cannot access it using this internal IP
-  * in this case you can access the application with the IP address of the docker host&#x20;
-  * but for this to work, you must have mapped the port inside the Docker container to a free port on the Docker host.
-  * e.g: if I want the users to access my application through Port 80 on my Docker host, I could map Port 80 of local host to port 5,000 on the Docker container, using the -P parameter in my run command&#x20;
-  * Now All traffic on port 80 on my Docker host will get routed to port 5,000 inside the Docker container.
-
-you can run multiple instances of your application and map them to different ports on the Docker host or
-
-run instances of different applications on different ports.&#x20;
-
-you cannot map to the same port on the Docker host more than once.
-
-
-
-[^1]: tag

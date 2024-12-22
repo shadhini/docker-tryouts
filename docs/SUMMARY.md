@@ -8,7 +8,9 @@
 ## docker commands
 
 * [Docker Commands](docker-commands/docker-commands.md)
-* [Hands On](docker-commands/hands-on.md)
+* [Hands On](docker-commands/hands-on/README.md)
+  * [Basic Docker Commands](docker-commands/hands-on/basic-docker-commands.md)
+  * [Docker Run](docker-commands/hands-on/docker-run.md)
 
 ## important
 
