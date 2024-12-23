@@ -4,7 +4,7 @@ icon: circle-exclamation
 
 # Important Notes
 
-
+## Alive Period of Containers
 
 {% hint style="success" %}
 **Containers are designed to run specific tasks or processes**,&#x20;
@@ -55,4 +55,12 @@ b5af99b791e6   ubuntu                         "/bin/bash"              10 second
 1213547bd1b5   metabase/metabase              "/app/run_metabase.sh"   12 months ago    Exited (143) 12 months ago                                                      metabase_default
 
 ```
+
+
+
+## Accessing Services on Docker Host from a Docker Container
+
+{% hint style="success" %}
+Use `host.docker.internal` instead of `localhost` to access a service running on the docker host from the docker container. This special DNS name resolves to the host machine's IP from within the container.
+{% endhint %}
 

@@ -54,7 +54,7 @@ To find information about available versions/tags of a particular image, look up
 
 
 
-### Port Mapping | Port Publishing
+## Port Mapping | Port Publishing
 
 > **Port mapping | Port publishing:**&#x20;
 >
@@ -80,9 +80,21 @@ docker run -p 3306:3306 mysql
 docker run -p 8306:3306 mysql
 ```
 
+{% hint style="success" %}
+You can run **multiple instances** of your application by mapping each instance to a different port on the Docker host.&#x20;
 
+Additionally, you can run **instances of different applications** on separate ports, allowing multiple applications or instances to coexist on the same host.
+{% endhint %}
 
-#### Explanation: Port Mapping | Port Publishing
+{% hint style="danger" %}
+However, you **cannot map multiple containers to the same port** on the Docker host.
+{% endhint %}
+
+{% hint style="warning" %}
+You **cannot modify the port mapping of an existing container.**
+{% endhint %}
+
+### Explanation: Port Mapping | Port Publishing
 
 `Docker Host` | `Docker Engine`: the underlying host where docker is installed
 
@@ -106,7 +118,7 @@ But, **users outside the Docker host** cannot access the application via a web b
 
 **To enable access through the Docker host,**&#x20;
 
-* `Port Mapping` required.
+* `Port Mapping` is required.
 * You must map a port from the Docker container to an available port on the Docker host.&#x20;
   * e.g: To allow users to access the application via port 80 on the Docker host, you can map port 80 on the host to port 5000 inside the container using the following command:
     * ```bash
@@ -119,15 +131,43 @@ But, **users outside the Docker host** cannot access the application via a web b
 
 
 
-{% hint style="success" %}
-You can run **multiple instances** of your application by mapping each instance to a different port on the Docker host.&#x20;
-
-Additionally, you can run **instances of different applications** on separate ports, allowing multiple applications or instances to coexist on the same host.
-{% endhint %}
+### Port Mapping on MacOS
 
 {% hint style="danger" %}
-However, you **cannot map multiple containers to the same port** on the Docker host.
+**MacOS Networking**: On macOS, Docker uses a virtual machine to run containers, so directly accessing the container's internal IP from outside the Docker host is not possible unless you map the ports to the host machine using the `-p` option
 {% endhint %}
+
+
+
+### Ports published on host & ports exposed on container
+
+> **Ports exposed on the container:**
+>
+> ports that the **container's services** (e.g., a web server, database) **listen** on inside the container.
+>
+>
+>
+> **Ports published on the host:**\
+> ports mapped from the container to the host, making the container's service accessible from outside the container.
+
+
+
+```bash
+~ ➜  docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                                                                NAMES
+0ba02655cbf1   nginx:alpine   "/docker-entrypoint.…"   16 seconds ago   Up 13 seconds   0.0.0.0:3456->3456/tcp, :::3456->3456/tcp, 0.0.0.0:38080->80/tcp, :::38080->80/tcp   recursing_galileo
+```
+
+`0.0.0.0:3456->3456/tcp,`&#x20;
+
+`:::3456->3456/tcp,`&#x20;
+
+`0.0.0.0:38080->80/tcp,`&#x20;
+
+`:::38080->80/tcp`
+
+* ports published on host: 3456 & 38080
+* ports exposed on container: 3456 & 80
 
 
 
@@ -146,10 +186,6 @@ However, you **cannot map multiple containers to the same port** on the Docker h
 
 <figure><img src="../.gitbook/assets/volume-mapping.png" alt="" width="375"><figcaption><p>Volume Mapping</p></figcaption></figure>
 
-Say, you run a MYSQL container
-
-* When databases and tables are created, the data files are stored in the location `/var/lib/mysql` inside the Docker container
-
 {% hint style="info" %}
 Docker container has its **own isolated file system** and any changes to any files happen within the container.&#x20;
 {% endhint %}
@@ -161,6 +197,14 @@ Docker container has its **own isolated file system** and any changes to any fil
 {% hint style="danger" %}
 When you **remove/delete a container**, all the **data** inside the container will be **lost**.
 {% endhint %}
+
+
+
+### Explanation: Volume Mapping
+
+Say, you run a MYSQL container
+
+* When databases and tables are created, the data files are stored in the location `/var/lib/mysql` inside the Docker container
 
 
 
@@ -179,6 +223,28 @@ docker run -v /opt/datadir:/var/lib/mysql mysql
 * This ensures that all your data is stored in the **external volume** at the /opt/data directory, **preserving it even if the Docker container is deleted**.
 
 
+
+### Practical use case of Volumes
+
+{% hint style="info" %}
+Suppose you log in to the containerized Jenkins server and make some configuration changes. If you then spin up another container and access the Jenkins server there, you won't see the configuration changes made in the first container. This happens because these are two isolated environments, and the data from the first container is not shared with the second one.
+
+To resolve this issue, you can use **volume mapping**. By mapping the data volumes of both containers to the same directory on the Docker host, the configurations and data will be shared between them. This ensures that changes made in one container are accessible in the other.
+{% endhint %}
+
+
+
+## Running Multiple Instances&#x20;
+
+{% hint style="success" %}
+You can add as many as instances of the same image and configure a **load balancer** in the front.
+
+
+
+**If an instance fails**,&#x20;
+
+1. you can destroy ut and launch a new one.
+{% endhint %}
 
 
 
