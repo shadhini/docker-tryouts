@@ -213,7 +213,7 @@ Say, you run a MYSQL container
 ╰**--**➤  you have to map a directory outside the container on the Docker host to a directory inside the docker container as follows.
 
 ```bash
-docker run -v <DIRECTORY_INSIDE_CONTAINER>:<DIRECTORY_ON_DOCKER_HOST> <IMAGE_NAME>
+docker run -v <DOCKER_HOST_PATH>:<CONTAINER_PATH> <IMAGE_NAME>
 
 # example
 docker run -v /opt/datadir:/var/lib/mysql mysql
@@ -231,22 +231,6 @@ Suppose you log in to the containerized Jenkins server and make some configurati
 
 To resolve this issue, you can use **volume mapping**. By mapping the data volumes of both containers to the same directory on the Docker host, the configurations and data will be shared between them. This ensures that changes made in one container are accessible in the other.
 {% endhint %}
-
-
-
-## Running Multiple Instances&#x20;
-
-{% hint style="success" %}
-You can add as many as instances of the same image and configure a **load balancer** in the front.
-
-
-
-**If an instance fails**,&#x20;
-
-1. you can destroy ut and launch a new one.
-{% endhint %}
-
-
 
 [^1]: tag
 

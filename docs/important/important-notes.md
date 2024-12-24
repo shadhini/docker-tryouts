@@ -64,3 +64,19 @@ b5af99b791e6   ubuntu                         "/bin/bash"              10 second
 Use `host.docker.internal` instead of `localhost` to access a service running on the docker host from the docker container. This special DNS name resolves to the host machine's IP from within the container.
 {% endhint %}
 
+
+
+
+
+## Running Multiple Docker Instances&#x20;
+
+{% hint style="success" %}
+You can add as many as instances of the same image and configure a **load balancer** in the front.
+
+
+
+**If an instance fails**,&#x20;
+
+1. you can destroy ut and launch a new one.
+{% endhint %}
+
