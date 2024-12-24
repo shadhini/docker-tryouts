@@ -43,8 +43,7 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 </code></pre></td><td align="center"><p>Push locally built image to the public docker registry; <code>DockerHub</code></p><pre class="language-bash"><code class="lang-bash">docker push shadhinij/flask-webapp
 </code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker history &#x3C;IAMGE_NAME>
 </code></pre></td><td align="center">View information about layered architecture of the docker image with size</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker login
-</code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">
-</code></pre></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table>
+</code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table>
 
 ## Flags&#x20;
 
