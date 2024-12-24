@@ -19,7 +19,7 @@ This is used in the demonstration of development of Ansible Playbooks.
   
   Python and its dependencies
 
-    apt-get install -y python python-setuptools python-dev build-essential python-pip python-mysqldb
+    apt-get update && apt-get install -y python3 python3-pip python3-venv
 
    
 ## 2. Install and Configure Database
@@ -36,10 +36,11 @@ This is used in the demonstration of development of Ansible Playbooks.
   - Create database and database users
         
         # mysql -u <username> -p
-        
-        mysql> CREATE DATABASE employee_db;
-        mysql> GRANT ALL ON *.* to db_user@'%' IDENTIFIED BY 'Passw0rd';
-        mysql> USE employee_db;
+        	
+        mysql> CREATE DATABASE flask_webapp_db; 
+        mysql> CREATE USER 'docker-webapp'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'pwdocker-webapp';	
+        mysql> GRANT ALL ON flask_webapp_db.* to docker-webapp@'%' IDENTIFIED BY 'pwdocker-webapp';
+        mysql> USE flask_webapp_db;
         mysql> CREATE TABLE employees (name VARCHAR(20));
         
   - Insert some test data
@@ -48,10 +49,14 @@ This is used in the demonstration of development of Ansible Playbooks.
     
 ## 4. Install and Configure Web Server
 
-Install Python Flask dependency
+Install Python Flask dependency in a virtual environment
+
+    python3 -m venv .venv
+	source .venv/bin/activate
 
     pip install flask
     pip install flask-mysql
+    deactivate
 
 - Copy app.py or download it from source repository
 - Configure database credentials and parameters 
