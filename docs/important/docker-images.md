@@ -4,6 +4,8 @@ icon: image-landscape
 
 # Docker Images
 
+> A docker image is a lightweight, standalone executable package.
+
 ## When to create your own image?
 
 * If a component or service you need for your application is not already available on Docker Hub.
@@ -88,15 +90,104 @@ Every Docker image must be **based on either an operating system or another imag
 All Dockerfiles **must** start with the **FROM** instruction specifying the **base image**.
 {% endhint %}
 
-`FROM`: used to specify the base image
+<div><figure><img src="../.gitbook/assets/dockerfile_mysql.png" alt=""><figcaption><p>MySQL Dockerfile</p></figcaption></figure> <figure><img src="../.gitbook/assets/dockerfile_ubuntu.png" alt=""><figcaption><p>Ubuntu Dockerfile</p></figcaption></figure></div>
 
-`RUN`: instructs to run a particular command on the base image
+> **`FROM`**: used to specify the base image
+>
+> **`RUN`**: instructs to run a particular command on the base image
+>
+> **`COPY`**: copies files from the local system on to the docker image
 
-`COPY`: copies files from the local system on to the docker image
+### `ENTRYPOINT`
 
-`ENTRYPOINT`: allows us to specify a command that will be run when the image is run as a container&#x20;
+> **`ENTRYPOINT`**: specifies the program/command to run when the container starts, and any **command-line arguments** we pass with the _docker run_ will be **appended** to it.&#x20;
+
+You can pass any executable file as the ENTRYPOINT.
+
+```docker
+ENTRYPOINT <COMMAND>
+
+# example
+ENTRYPOINT ["bash"] ✅
+ENTRYPOINT bash ✅
+```
+
+{% hint style="success" %}
+The **command line arguments** passed with `docker run` command will be **appended** to the ENTRYPOINT instruction.
+{% endhint %}
+
+{% hint style="warning" %}
+If a command (i.e. **executable command**) is passed with `docker run` command, then it'll **replace** the ENTRYPOINT instruction.
+{% endhint %}
+
+### `CMD`
+
+> **`CMD`**: defines the program that will be run within the container when it starts; this command is used as the default command to run when container is up if no commands are specified with the _docker run_ command.
+
+{% hint style="danger" %}
+The **command line parameters** passed will **replace** the CMD instruction **entirely**.
+{% endhint %}
+
+{% hint style="success" %}
+**Appending a command** to the **`docker run`** command **overrides the default command** specified in the Docker image with **CMD** instructions.
+{% endhint %}
+
+```bash
+docker run <IMAGE_NAME> <COMMAND>
+
+# example
+docker run ubuntu sleep 1000
+```
+
+#### Specifying command simply as a in a shell form
+
+```docker
+CMD <COMMAND> <PARAM1...>
+
+# example
+CMD sleep 5
+```
+
+#### Specifying command in a JSON array format&#x20;
+
+❗when you specify in a JSON array format, the **first element** in the array should be an **executable**
+
+✅ The command and its parameters should be **separate elements** in the list
+
+```docker
+CMD [<COMMAND>, <PARAM1>, <PARAM2> ...]
+
+# example
+CMD ["sleep", "5"] ✅
+
+# wrong syntax
+CMD ["sleep 5"] ⛔
+```
 
 
+
+### Using `ENTRYPOINT` and `CMD` together
+
+> In this case the **`CMD` instruction** will be **appended** **to the `ENTRYPOINT`** instruction.
+>
+>
+>
+> ❗However, for this to work **both** `ENTRYPOINT` and `CMD` instructions should be specified in **JSON format**.
+
+This behaviour can be utilized to pass default parameters to the `ENTRYPOINT` instruction, just in case arguments are not passed with the docker run command.
+
+```docker
+ENTRYPOINT [<COMMAND>]
+CMD [<PARAM1>, <PARAM2> ...] 
+
+#example
+ENTRYPOINT ["sleep"]
+CMD ["10"]
+```
+
+{% hint style="info" %}
+In case, you pass arguments with the `docker run` command, then the arguments specified with the CMD instruction will be replaced by them.
+{% endhint %}
 
 ## Layered Architecture
 

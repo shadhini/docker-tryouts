@@ -16,7 +16,9 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 
 <table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Run a container from an image</p><p></p><p><strong>Here the container runs in the <code>foreground</code> or <code>attached mode</code></strong></p><ul><li>you are connected to its console and can only view its output</li><li>you can't perform other tasks until the container stops</li><li>If you <code>press Ctrl+C</code>, it'll stop the container and will exit the application and return you to the prompt</li></ul><pre class="language-sh"><code class="lang-sh">docker run nginx
-</code></pre><p>run an instance of the nginx application on the docker host</p><ul><li>if nginx image is already available on the docker host, it will be used.</li><li>otherwise, image will be pulled down (<strong>downloaded</strong>) from the public docker registry;<code>DockerHub</code> [if it's the first time]</li><li>in the subsequent executions, the same image will be reused</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --name &#x3C;NAME> &#x3C;IMAGE_NAME>
+</code></pre><p>run an instance of the nginx application on the docker host</p><ul><li>if nginx image is already available on the docker host, it will be used.</li><li>otherwise, image will be pulled down (<strong>downloaded</strong>) from the public docker registry;<code>DockerHub</code> [if it's the first time]</li><li>in the subsequent executions, the same image will be reused</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run &#x3C;IMAGE_NAME> &#x3C;COMMAND>
+</code></pre></td><td align="center"><p>Pass a command to run on the docker container as container starts running overriding the default command specified in the image</p><pre class="language-sh"><code class="lang-sh">docker run ubuntu sleep 1000
+</code></pre></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --name &#x3C;NAME> &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Give a name to the container that is created.</p><pre class="language-sh"><code class="lang-sh">docker run --name my-container ubuntu
 </code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps
 </code></pre></td><td align="center">Lists all running containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps -a
@@ -34,14 +36,15 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 </code></pre><ul><li>view the contents of /etc/hosts file inside a particular running container</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker attach &#x3C;CONTAINER_ID/CONTAINER_NAME>
 </code></pre></td><td align="center">Attach back to a running container in the background</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker inspect &#x3C;CONTAINER_ID/CONTAINER_NAME>
-</code></pre></td><td align="center"><p>Inspect container</p><ul><li><p>shows all details of a container in a <code>JSON</code> format</p><ul><li>state, mounds, configuration data, network settings, etc.</li></ul></li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker logs &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center"><p>Inspect a container (container could be running or exited or stopped)</p><ul><li><p>shows all details of a container in a <code>JSON</code> format</p><ul><li>state, mounds, configuration data, network settings, environment variables, etc.</li></ul></li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker logs &#x3C;CONTAINER_ID/CONTAINER_NAME>
 </code></pre></td><td align="center"><code>Container Logs</code>: View the logs (contents written to the standard out) of a container that is run in the background or a stopped container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker build &#x3C;PATH_TO_DOCKERFILE> -t &#x3C;IMAGE_TAG/NAME>
 </code></pre></td><td align="center"><p>Build docker image locally from Dockerfile and tag it </p><pre class="language-bash"><code class="lang-bash">docker build . -t shadhinij/flask-webapp
 </code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker push &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Push locally built image to the public docker registry; <code>DockerHub</code></p><pre class="language-bash"><code class="lang-bash">docker push shadhinij/flask-webapp
 </code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker history &#x3C;IAMGE_NAME>
 </code></pre></td><td align="center">View information about layered architecture of the docker image with size</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker login
-</code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table>
+</code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">
+</code></pre></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table>
 
 ## Flags&#x20;
 
@@ -53,7 +56,12 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 </strong></code></pre><pre class="language-bash"><code class="lang-bash"><strong>docker run -p 80:3306 mysql
 </strong></code></pre></td></tr><tr><td align="center"><strong>-v</strong></td><td align="center"><strong><code>Volume Mapping</code></strong>:   map directory (data volume) inside the docker container to a directory outside the container on the Docker host (external volume)</td><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker run -v &#x3C;DIRECTORY_INSIDE_CONTAINER>:&#x3C;DIRECTORY_ON_DOCKER_HOST> &#x3C;IMAGE_NAME>
 </code></pre><pre class="language-bash"><code class="lang-bash">docker run -v /opt/datadir:/var/lib/mysql mysql
-</code></pre></td></tr><tr><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table>
+</code></pre></td></tr><tr><td align="center"><strong>-e</strong></td><td align="center"><p></p><p><strong>Environment Variables</strong>: Pass environment variables to containers created </p><pre class="language-bash"><code class="lang-bash">docker run -e &#x3C;ENVIRONMENT_VARIABLE_NAME>:&#x3C;VALUE> &#x3C;IMAGE_NAME>
+</code></pre></td><td align="center"><p></p><p>Pass environment variables to containers created </p><pre class="language-bash"><code class="lang-bash">docker run -e APP_COLOR:blue simple-webapp-color
+docker run -e APP_COLOR:r
+</code></pre></td></tr></tbody></table>
+
+
 
 **--command**: To run a Docker container with a specific command, this option can be used with `docker run` command
 

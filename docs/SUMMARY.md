@@ -10,6 +10,7 @@
 * [Important Notes](important/important-notes.md)
 * [Docker Run](important/docker-run.md)
 * [Docker Images](important/docker-images.md)
+* [Environment Variables](important/environment-variables.md)
 
 ## docker commands
 
