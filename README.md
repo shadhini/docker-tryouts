@@ -14,5 +14,5 @@ Perfect for beginners and those looking to sharpen their containerization skills
        * [TODO] with both `ENTRYPOINT` and `CMD` instructions 
 2. Docker compose [𓄲 docker-compose](https://github.com/shadhini/docker-tryouts/tree/main/docker-compose)
    *  Sample `docker-compose.yml` file for
-     * simple voting application [𓄲 docker-compose.yml](https://github.com/shadhini/docker-tryouts/blob/main/docker-compose/simple-voting-app/docker-compose.yml)
+      * simple voting application [𓄲 docker-compose.yml](https://github.com/shadhini/docker-tryouts/blob/main/docker-compose/simple-voting-app/docker-compose.yml)
 
