@@ -10,6 +10,9 @@ icon: image-landscape
 
 * If a component or service you need for your application is not already available on Docker Hub.
 * When you/your team decided to dockerize the application you’re developing to simplify shipping and deployment.
+  * To pre-install software dependencies
+  * To include application-specific configuration
+  * To create a reproducible environment
 
 
 
@@ -190,6 +193,8 @@ CMD ["10"]
 {% hint style="info" %}
 In case, you pass arguments with the `docker run` command, then the arguments specified with the CMD instruction will be replaced by them.
 {% endhint %}
+
+
 
 ## Layered Architecture
 
