@@ -17,3 +17,4 @@ replay_pid*
 # IntelliJIDEA IDE relatate files
 /.idea/
 *.iml
+/docker-compose/simple-voting-app/source-code/example-voting-app/
