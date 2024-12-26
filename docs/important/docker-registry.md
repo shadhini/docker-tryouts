@@ -18,6 +18,7 @@ _`Registry`_: Where the images are stored and pulled from
 
 * There are many popular registries
   * default registry - DockerHub: `docker.io`
+    * hosted registry solution by `Docker Inc`
   * Google's registry - `gcr.io`
 
 _`User/Account`_: The DockerHub account of an individual user or an organization
@@ -54,7 +55,7 @@ You have to login before pulling or pushing to a private registry.
 
 ## Deploy Private Registry
 
-To deploy a private registry for on-premises applications, you can use Docker's **`registry`** image, which exposes the API on port 5000.&#x20;
+To deploy a private registry **for on-premises applications**, you can use Docker's **`registry`** image, which exposes the API on port 5000.&#x20;
 
 ```bash
 docker run -d -p 5000:5000 --name registry registry:2

@@ -4,6 +4,10 @@ icon: globe-wifi
 
 # Docker Networking
 
+* Containers can be connected to more than one network.
+* Containers can communicate with each other without any explicit links.
+* You can't delete a network if any container is connected to it.
+
 ## Default Networks
 
 When you install Docker, it creates 3 networks automatically.&#x20;

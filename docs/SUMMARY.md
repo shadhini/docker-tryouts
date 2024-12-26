@@ -29,6 +29,8 @@
   * [Docker Run](docker-commands/hands-on/docker-run.md)
   * [Docker Images](docker-commands/hands-on/docker-images.md)
   * [Docker Compose](docker-commands/hands-on/docker-compose.md)
+  * [Docker Networks](docker-commands/hands-on/docker-networks.md)
+  * [Docker Registry](docker-commands/hands-on/docker-registry.md)
 
 ***
 

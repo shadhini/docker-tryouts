@@ -44,6 +44,16 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 
 
 
+#### container restart policy
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --restart=&#x3C;RESTART_POLICY> &#x3C;IMAGE_NAME>
+</code></pre></td><td align="center"><p>Set container restart policy</p><ol><li><strong><code>no</code></strong>: The container does not restart (<code>default</code>)</li><li><p><strong><code>on-failure</code>:</strong> Restart on failure only:</p><pre class="language-bash"><code class="lang-bash">docker run --restart=on-failure:5 my-image
+</code></pre></li><li><p><strong><code>always</code></strong>: Always restart</p><pre class="language-bash"><code class="lang-bash">docker run --restart=always my-image
+</code></pre></li><li><p><strong><code>unless-stopped</code></strong>: Restart unless stopped manually</p><pre class="language-bash"><code class="lang-bash">docker run --restart=unless-stopped my-image
+</code></pre></li></ol></td></tr></tbody></table>
+
+
+
 ### container management
 
 <table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps
@@ -70,7 +80,8 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 </code></pre></td><td align="center"><p>Push locally built image to the public docker registry; <code>DockerHub</code></p><pre class="language-bash"><code class="lang-bash">docker push shadhinij/flask-webapp
 </code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker login
 </code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker history &#x3C;IAMGE_NAME>
-</code></pre></td><td align="center">View information about layered architecture of the docker image with size</td></tr></tbody></table>
+</code></pre></td><td align="center">View information about layered architecture of the docker image with size</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker image prune -a
+</code></pre></td><td align="center">Remove all the dangling images you have locally; this remove all images without at least one container associated to them.</td></tr></tbody></table>
 
 
 
@@ -112,7 +123,9 @@ You **can use the** **first few unique characters of a container ID** in Docker 
     custom-isolated-network
 </code></pre><ul><li>Create a custom internal bridge network named <code>custom-isolated-network</code> with subnet 182.18.0.0/16 and configure gateway to  182.18.0.1.</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network ls
 </code></pre></td><td align="center">View all networks available in the host machine</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network inspect &#x3C;NETWORK_NAME>
-</code></pre></td><td align="center">Inspect a specific network and details such as it's subnet</td></tr></tbody></table>
+</code></pre></td><td align="center">Inspect a specific network and details such as it's subnet</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network connect &#x3C;NETWORK_NAME> &#x3C;CONTAINER_NAME>
+</code></pre></td><td align="center">Connect an existing container to a network</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network disconnect &#x3C;NETWORK_NAME> &#x3C;CONTAINER_NAME>
+</code></pre></td><td align="center">Disconnect a container from a network</td></tr></tbody></table>
 
 
 
