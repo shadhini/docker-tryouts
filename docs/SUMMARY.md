@@ -4,6 +4,7 @@
 
 * [Docker Overview](README.md)
 * [Setup and Install Docker](getting-started/setup-and-install-docker.md)
+* [Docker on Mac](getting-started/docker-on-mac.md)
 
 ## important
 
