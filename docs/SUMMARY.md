@@ -17,7 +17,8 @@
   * [Docker Engine](important/docker-architecture/docker-engine.md)
   * [Containerization](important/docker-architecture/containerization.md)
   * [Docker Storage Drivers and File Systems](important/docker-architecture/docker-storage-drivers-and-file-systems.md)
-* [Untitled](important/untitled.md)
+* [Docker Networking](important/docker-networking.md)
+* [Docker Registry](important/docker-registry.md)
 
 ## docker commands
 

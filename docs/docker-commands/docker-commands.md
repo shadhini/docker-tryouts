@@ -12,50 +12,115 @@ Each container is **automatically assigned** a **random ID and name** generated 
 You **can use the** **first few unique characters of a container ID** in Docker commands, as long as they differ from other container IDs on the host.
 {% endhint %}
 
+## **Docker Commands**
+
 **Prerequisite**: install docker on your host
 
+### docker run
+
 <table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run &#x3C;IMAGE_NAME>
-</code></pre></td><td align="center"><p>Run a container from an image</p><p></p><p><strong>Here the container runs in the <code>foreground</code> or <code>attached mode</code></strong></p><ul><li>you are connected to its console and can only view its output</li><li>you can't perform other tasks until the container stops</li><li>If you <code>press Ctrl+C</code>, it'll stop the container and will exit the application and return you to the prompt</li></ul><pre class="language-sh"><code class="lang-sh">docker run nginx
-</code></pre><p>run an instance of the nginx application on the docker host</p><ul><li>if nginx image is already available on the docker host, it will be used.</li><li>otherwise, image will be pulled down (<strong>downloaded</strong>) from the public docker registry;<code>DockerHub</code> [if it's the first time]</li><li>in the subsequent executions, the same image will be reused</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run &#x3C;IMAGE_NAME> &#x3C;COMMAND_TO_RUN_A_PROCESS>
-</code></pre></td><td align="center"><p>Override a Docker image's default command by specifying a custom command (an executable) when starting the container.</p><pre class="language-sh"><code class="lang-sh">docker run ubuntu sleep 100
-</code></pre><ul><li>Here, when the container starts, it runs the sleep command for 100 seconds, and once the sleep command finishes, the container stops.</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --name &#x3C;NAME> &#x3C;IMAGE_NAME>
+</code></pre></td><td align="center"><p>Run a container from an image; Run an instance of an image</p><p></p><p><strong>Here the container runs in the <code>foreground</code> or <code>attached mode</code></strong></p><ul><li>you are connected to its console and can only view its output</li><li>you can't perform other tasks until the container stops</li><li>If you <code>press Ctrl+C</code>, it'll stop the container and will exit the application and return you to the prompt</li></ul><pre class="language-sh"><code class="lang-sh">docker run nginx
+</code></pre><p>run an instance of the nginx application on the docker host</p><ul><li>if nginx image is already available on the docker host, it will be used.</li><li>otherwise, image will be pulled down (<strong>downloaded</strong>) from the public docker registry;<code>DockerHub</code> [if it's the first time]</li><li>in the subsequent executions, the same image will be reused</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --name &#x3C;NAME> &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Give a name to the container that is created.</p><pre class="language-sh"><code class="lang-sh">docker run --name my-container ubuntu
-</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
-</code></pre></td><td align="center"><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --cpus=&#x3C;MAX_CPU_PERCENTAGE> &#x3C;IMAGE_MAME>
-</code></pre></td><td align="center"><p>Ensure that the ubuntu container won't take up more than 50% of the host CPU at any given time</p><pre class="language-bash"><code class="lang-bash">docker run --cpus=.5 ubuntu
-</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --memory=&#x3C;MAX_MEMORY_PERCENTAGE> &#x3C;IMAGE_MAME>
-</code></pre></td><td align="center"><p><br>Limit the amount of memory that the ubuntu container can use to 100MB</p><pre class="language-bash"><code class="lang-bash">docker run --memory=100m ubuntu
-</code></pre></td></tr><tr><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker volume create &#x3C;DATA_VOLUME_NAME>
-</code></pre></td><td align="center"><p></p><p>Create data volume</p><pre class="language-bash"><code class="lang-bash"><strong>docker volume create data_volume
-</strong></code></pre><ul><li>This will create a folder named <code>data_volume</code> at <code>/var/lib/docker/volumes</code> directory</li></ul></td></tr><tr><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker run --mount type=&#x3C;BIND|VOLUME>,source=&#x3C;HOST_PATH>,target=&#x3C;CONTATINER_PATH> &#x3C;IMAGE_NAME>
-</code></pre><p></p></td><td align="center"><p>Mounting </p><pre class="language-bash"><code class="lang-bash">docker run --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql
-</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps
+</code></pre></td></tr></tbody></table>
+
+
+
+#### detach attach mode
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
+</code></pre></td><td align="center"><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul><p></p></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker attach &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center">Attach back to a running container in the background</td></tr></tbody></table>
+
+
+
+#### executing commands on container
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run &#x3C;IMAGE_NAME> &#x3C;COMMAND_TO_RUN_A_PROCESS>
+</code></pre></td><td align="center"><p>Override a Docker image's default command by specifying a custom command (an executable) when starting the container.</p><pre class="language-sh"><code class="lang-sh">docker run ubuntu sleep 100
+</code></pre><ul><li>Here, when the container starts, it runs the sleep command for 100 seconds, and once the sleep command finishes, the container stops.</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker exec &#x3C;CONTAINER_ID/CONTAINER_NAME> &#x3C;COMMAND>
+</code></pre></td><td align="center"><p>Execute a command on a running container.</p><pre class="language-sh"><code class="lang-sh">docker exec sad_kirch cat /etc/hosts
+</code></pre><ul><li>view the contents of /etc/hosts file inside a particular running container</li></ul></td></tr></tbody></table>
+
+
+
+### container management
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps
 </code></pre></td><td align="center">Lists all running containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps -a
 </code></pre></td><td align="center">Lists all containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker stop &#x3C;CONTAINER_ID/CONTAINER_NAME>
 </code></pre></td><td align="center">Stops the running container with given container id or name</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker start &#x3C;CONTAINER_ID/CONTAINER_NAME>
 </code></pre></td><td align="center">Start an exited/stopped container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker restart &#x3C;CONTAINER_ID/CONTAINER_NAME>
 </code></pre></td><td align="center">Restart a container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker rm &#x3C;CONTAINER_ID/CONTAINER_NAME>>
-</code></pre></td><td align="center">Removes a stopped or existed container permanently</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker images 
+</code></pre></td><td align="center">Removes a stopped or existed container permanently</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker inspect &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center"><p>Inspect a container (container could be running or exited or stopped)</p><ul><li><p>shows all details of a container in a <code>JSON</code> format</p><ul><li>state, mounts, configuration data, </li><li><p>network settings: </p><ul><li>networks: <code>NetworkSettings:Networks</code></li></ul></li><li>environment variables: <code>Config:Env</code></li><li>etc.</li></ul></li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker logs &#x3C;CONTAINER_ID/CONTAINER_NAME>
+</code></pre></td><td align="center"><code>Container Logs</code>: View the logs (contents written to the standard out) of a container that is run in the background or a stopped container</td></tr></tbody></table>
+
+
+
+### image management
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker images 
 </code></pre></td><td align="center">List of available images</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker rmi &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Remove an image</p><ul><li>Make sure that no containers are running off of the image to be removed. </li><li>All dependent containers must be stopped and deleted to delete an image.</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker pull &#x3C;IMAGE_NAME>
-</code></pre></td><td align="center">Pull/Download an image from the <code>DockerHub</code><br>- This will not run the container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker exec &#x3C;CONTAINER_ID/CONTAINER_NAME> &#x3C;COMMAND>
-</code></pre></td><td align="center"><p>Execute a command on a running container.</p><pre class="language-sh"><code class="lang-sh">docker exec sad_kirch cat /etc/hosts
-</code></pre><ul><li>view the contents of /etc/hosts file inside a particular running container</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker attach &#x3C;CONTAINER_ID/CONTAINER_NAME>
-</code></pre></td><td align="center">Attach back to a running container in the background</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker inspect &#x3C;CONTAINER_ID/CONTAINER_NAME>
-</code></pre></td><td align="center"><p>Inspect a container (container could be running or exited or stopped)</p><ul><li><p>shows all details of a container in a <code>JSON</code> format</p><ul><li>state, mounds, configuration data, network settings, environment variables, etc.</li></ul></li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker logs &#x3C;CONTAINER_ID/CONTAINER_NAME>
-</code></pre></td><td align="center"><code>Container Logs</code>: View the logs (contents written to the standard out) of a container that is run in the background or a stopped container</td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker build &#x3C;PATH_TO_DOCKERFILE> -t &#x3C;IMAGE_TAG/NAME>
+</code></pre></td><td align="center">Pull/Download an image from the <code>DockerHub</code><br>- This will not run the container</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker build &#x3C;PATH_TO_DOCKERFILE> -t &#x3C;IMAGE_TAG/NAME>
 </code></pre></td><td align="center"><p>Build docker image locally from Dockerfile and tag it </p><pre class="language-bash"><code class="lang-bash">docker build . -t shadhinij/flask-webapp
-</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker push &#x3C;IMAGE_NAME>
+</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker image tag &#x3C;IMAGE_NAME> &#x3C;TAG>
+</code></pre></td><td align="center">Tag an image</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker push &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><p>Push locally built image to the public docker registry; <code>DockerHub</code></p><pre class="language-bash"><code class="lang-bash">docker push shadhinij/flask-webapp
-</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker history &#x3C;IAMGE_NAME>
-</code></pre></td><td align="center">View information about layered architecture of the docker image with size</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker login
-</code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"></td><td align="center"></td></tr><tr><td align="center"></td><td align="center"></td></tr></tbody></table>
+</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker login
+</code></pre></td><td align="center"><p>Login to your docker account </p><ul><li>It is a must to login to the account before pushing images to the DockerHub</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker history &#x3C;IAMGE_NAME>
+</code></pre></td><td align="center">View information about layered architecture of the docker image with size</td></tr></tbody></table>
+
+
+
+### Cgroups
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --cpus=&#x3C;MAX_CPU_PERCENTAGE> &#x3C;IMAGE_MAME>
+</code></pre></td><td align="center"><p>Ensure that the ubuntu container won't take up more than 50% of the host CPU at any given time</p><pre class="language-bash"><code class="lang-bash">docker run --cpus=.5 ubuntu
+</code></pre></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run --memory=&#x3C;MAX_MEMORY_PERCENTAGE> &#x3C;IMAGE_MAME>
+</code></pre></td><td align="center"><p><br>Limit the amount of memory that the ubuntu container can use to 100MB</p><pre class="language-bash"><code class="lang-bash">docker run --memory=100m ubuntu
+</code></pre></td></tr></tbody></table>
+
+
+
+### Mounts
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker volume create &#x3C;DATA_VOLUME_NAME>
+</code></pre></td><td align="center"><p></p><p>Create data volume</p><pre class="language-bash"><code class="lang-bash"><strong>docker volume create data_volume
+</strong></code></pre><ul><li>This will create a folder named <code>data_volume</code> at <code>/var/lib/docker/volumes</code> directory</li></ul><p></p></td></tr><tr><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker run --mount type=&#x3C;BIND|VOLUME>,source=&#x3C;HOST_PATH>,target=&#x3C;CONTATINER_PATH> &#x3C;IMAGE_NAME>
+</code></pre><p></p></td><td align="center"><p>Mounting </p><pre class="language-bash"><code class="lang-bash">docker run --mount type=bind,source=/data/mysql,target=/var/lib/mysql mysql
+</code></pre></td></tr></tbody></table>
+
+
+
+### Networks
+
+<table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run &#x3C;IMAGE_NAME> --network=&#x3C;NETWORK>
+</code></pre></td><td align="center"><p>Attach container to a network</p><pre class="language-bash"><code class="lang-bash"><strong>docker run ubuntu
+</strong></code></pre><ul><li>runs the ubuntu container in the bridge network; the <strong>default</strong> private internal network </li></ul><pre class="language-bash"><code class="lang-bash">docker run ubuntu --network=none
+</code></pre><ul><li>runs the ubuntu container in an isolated network which is not not attached to any network</li></ul><pre class="language-bash"><code class="lang-bash">docker run ubuntu --network=host
+</code></pre><ul><li>attach the ubuntu container to host network</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network create \
+    --driver &#x3C;DRIVER:bridge|host|null> \
+    --subnet &#x3C;SUBNET_FOR_NETWORK> \
+    --gateway &#x3C;GATEWAY> # including --gateway option is optional \
+    &#x3C;NETWORK_NAME>
+</code></pre></td><td align="center"><p>Create a user-defined network; specifying gateway is optional.</p><pre class="language-bash"><code class="lang-bash">docker network create \
+    --driver bridge \
+    --subnet 182.18.0.0/16 \
+    --gateway 182.18.0.1 \
+    custom-isolated-network
+</code></pre><ul><li>Create a custom internal bridge network named <code>custom-isolated-network</code> with subnet 182.18.0.0/16 and configure gateway to  182.18.0.1.</li></ul></td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network ls
+</code></pre></td><td align="center">View all networks available in the host machine</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker network inspect &#x3C;NETWORK_NAME>
+</code></pre></td><td align="center">Inspect a specific network and details such as it's subnet</td></tr></tbody></table>
 
 
 
 ## Flags&#x20;
 
-<table data-full-width="false"><thead><tr><th width="86" align="center">Flag</th><th width="338" align="center">Explanation</th><th width="321" align="center">Example</th></tr></thead><tbody><tr><td align="center">-----</td><td align="center"><strong>docker run flags</strong></td><td align="center">-------------------------------------</td></tr><tr><td align="center">-<strong>d</strong></td><td align="center"><p></p><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
+### Docker Run Flags
+
+<table data-full-width="false"><thead><tr><th width="86" align="center">Flag</th><th width="338" align="center">Explanation</th><th width="321" align="center">Example</th></tr></thead><tbody><tr><td align="center">-<strong>d</strong></td><td align="center"><p></p><p>Run the docker container in the detached mode</p><ul><li>Run the container in the background mode</li><li>you will be back to your prompt immediately and the  container will continue to run in the backend</li></ul><pre class="language-bash"><code class="lang-bash">docker run -d &#x3C;IMAGE_NAME>
 </code></pre></td><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -d ubuntu
 </code></pre></td></tr><tr><td align="center">-<strong>it</strong></td><td align="center"><p>Run a container in <strong>interactive mode</strong> with a pseudo-TTY (teletypewriter). </p><ul><li><p><strong><code>-i</code></strong>: read the standard input and provide interactive mode</p><ul><li>Keeps the standard input (stdin) open for the container, allowing interactive communication.</li></ul></li><li><p><strong><code>-t</code></strong>: attach the container's terminal and provides the prompt</p><ul><li>Allocates a pseudo-TTY, which makes the interaction with the container more user-friendly, like a real terminal. </li></ul></li></ul></td><td align="center"><p></p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
 </code></pre><p>starts an Ubuntu container in interactive mode, opening a shell inside the container for user input</p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu bash
