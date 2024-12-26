@@ -20,3 +20,9 @@ Information @ [Get Docker](https://docs.docker.com/get-started/get-docker/)
 
 You can find public images on [`DockerHub`](https://hub.docker.com/).
 
+{% hint style="info" %}
+If you want to **bind Docker to another host/port or a Unix socket**,&#x20;
+
+╰**--**➤ you need to manipulate **daemon.json**
+{% endhint %}
+

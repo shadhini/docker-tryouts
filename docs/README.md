@@ -75,12 +75,15 @@ Docker addresses challenges like&#x20;
   * They only need to have docker installed.
 * **Portability:** Applications run consistently across different environments.
 * **Efficiency:** Containers are lightweight (MBs vs. GBs for VMs) and boot up quickly (seconds vs. minutes for VMs).
+* Decreased resource usage
 
 {% hint style="info" %}
 Containers are more lightweight and resource-efficient compared to virtual machines (VMs).
 {% endhint %}
 
-
+{% hint style="warning" %}
+Docker does **not** provide **reduced security risk**.
+{% endhint %}
 
 ## Containers
 

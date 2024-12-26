@@ -56,6 +56,8 @@ You **can use the** **first few unique characters of a container ID** in Docker 
 
 ### container management
 
+_**Valid Statuses**_: `Created` | `Running` | `Paused` | `Stopped` | `Restarting` | `Exited` | `Dead`
+
 <table><thead><tr><th width="265" align="center">Docker Command</th><th align="center">Explanation</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps
 </code></pre></td><td align="center">Lists all running containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker ps -a
 </code></pre></td><td align="center">Lists all containers</td></tr><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker stop &#x3C;CONTAINER_ID/CONTAINER_NAME>
@@ -153,5 +155,4 @@ docker run -e APP_COLOR=red simple-webapp-color
 
 
 
-**--command**: To run a Docker container with a specific command, this option can be used with `docker run` command
-
+**--command**: To run a Docker container with a specific command, this option can be used with `docker run` command\
