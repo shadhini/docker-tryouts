@@ -3,6 +3,7 @@
 ## Getting Started
 
 * [Docker Overview](README.md)
+* [Docker Suite](getting-started/docker-suite.md)
 * [Setup and Install Docker](getting-started/setup-and-install-docker.md)
 * [Docker on Mac](getting-started/docker-on-mac.md)
 
