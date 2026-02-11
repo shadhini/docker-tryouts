@@ -24,6 +24,7 @@
 
 ## docker commands
 
+* [Docker Configurations](docker-commands/docker-configurations.md)
 * [Docker Commands](docker-commands/docker-commands.md)
 * [Docker Compose Commands](docker-commands/docker-compose-commands.md)
 * [Hands On](docker-commands/hands-on/README.md)

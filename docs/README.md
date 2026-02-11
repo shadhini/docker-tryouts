@@ -52,8 +52,7 @@ Docker addresses challenges like&#x20;
 * **resource efficiency**.&#x20;
 {% endhint %}
 
-\
-
+<br>
 
 ## What is Docker?
 
@@ -162,7 +161,7 @@ Docker's **inability** **to run a different kernel on the host** operating syste
 |                                                                                 <p>HVM consume higher disk space<br><strong>GB</strong> in size</p>                                                                                |                                                               <p>Containers are <strong>lightweight</strong><br><strong>MB</strong> in size</p>                                                               |
 |                                                                               <p>takes minutes to boot up <br>- since entire OS should be boot up</p>                                                                              |                                                                       <p>can boot up faster (in seconds)<br>- since it's lightweight</p>                                                                      |
 |                                                         <p>completely isolated<br>can run different types of applications built on different OSs on the same hypervisor</p>                                                        |                                                            <p>less isolated<br>more resources are shared between the containers like the kernel</p>                                                           |
-|                                                                    <p>provide <strong>full OS virtualization</strong> <br>- host an entire operating system</p>                                                                    | <p>Run a <strong>specific tasks or processes</strong><br><br>e.g: </p><ul><li>host an instance of a web server/ application server/database</li><li>carry some kind of computation ro analysis task</li></ul> |
+|                                                                    <p>provide <strong>full OS virtualization</strong> <br>- host an entire operating system</p>                                                                    | <p>Run a <strong>specific tasks or processes</strong><br><br>e.g: </p><ul><li>host an instance of a web server/ application server/database</li><li>carry some kind of computation to analysis task</li></ul> |
 
 
 
@@ -192,7 +191,7 @@ Containers provisioned on virtual Docker hosts
 
 
 {% hint style="info" %}
-Most organizations have their products containerized and available in a p**ublic Docker repository** called `DockerHub` or `Docker Store`.&#x20;
+Most organizations have their products containerized and available in a **public Docker repository** called `DockerHub` or `Docker Store`.&#x20;
 {% endhint %}
 
 
@@ -218,8 +217,7 @@ If you can't find the image you are looking for,&#x20;
 * Developers and Ops teams collaborate to create a DockerFile that defines application setup.
 * Images built from the `DockerFile` ensure consistent behavior across all environments.
 
-\
-
+<br>
 
 [^1]: e.g: Ubuntu, Fedora, SUSE, CentOS, Debian
 
