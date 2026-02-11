@@ -45,12 +45,10 @@ To find information about available versions/tags of a particular image, look up
 > * Then you must map the standard input of your host with **`-i`** flag
 > * To include the prompt as well, you need to attach the container's terminal with **`-t`** flag
 
-|                                                                                                                                                                                                                                                            Examples                                                                                                                                                                                                                                                            |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
+<table><thead><tr><th align="center">Examples</th></tr></thead><tbody><tr><td align="center"><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
 </code></pre><p>starts an Ubuntu container in interactive mode, opening a shell inside the container for user input</p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu bash
 </code></pre><p>runs an Ubuntu container and gives you a Bash shell</p><pre class="language-bash"><code class="lang-bash">docker exec -it &#x3C;CONTAINER_ID> bash
-</code></pre><p>attaches to the shell of an already running container<br></p> |
+</code></pre><p>attaches to the shell of an already running container<br></p></td></tr></tbody></table>
 
 
 
@@ -93,6 +91,8 @@ However, you **cannot map multiple containers to the same port** on the Docker h
 {% hint style="warning" %}
 You **cannot modify the port mapping of an existing container.**
 {% endhint %}
+
+
 
 ### Explanation: Port Mapping | Port Publishing
 
