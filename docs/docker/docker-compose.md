@@ -83,11 +83,11 @@ docker run -d --name=voting-app -p 5000:80 --link redis:redis voting-app
 
 
 
-## Linking Containers with Docker Compose
+### Linking Containers with Docker Compose
 
 docker-compose.yml file
 
-```docker
+```yml
 redis:
     image: redis
 
@@ -127,7 +127,7 @@ This will bring up the entire container stack. Here, we **assume** that **all im
 
 To instruct Docker Compose to build an image instead of pulling it, replace the `image` line with a `build` line and specify the directory containing the application code and Dockerfile.
 
-```
+```yml
 redis:
     image: redis
 
@@ -197,7 +197,7 @@ In Version 2, Docker Compose **creates a dedicated bridged network for the appli
 
 Depends\_on feature can be used to **specify a start up order** for containers.
 
-```
+```yaml
 version: "2"
 services:
     redis:
@@ -219,7 +219,7 @@ services:
 * Comes with support for **Swarm**.
 * Introduced **`deploy`** section for defining deployment-specific options like replicas, resource limits, and rolling updates.
 
-```
+```yaml
 version: "3"
 services:
     redis:
@@ -250,7 +250,7 @@ To do this, In the `docker-compose.yml` file,&#x20;
 * create a `networks` property at the root level to define the networks to be used&#x20;
 * then, under each service, add a `networks` property with a list of networks that the service should be attached to
 
-```
+```yaml
 version: "2"
 services:
     redis:
@@ -291,4 +291,4 @@ networks:
 
 
 
-\
+<br>

@@ -4,9 +4,20 @@ icon: globe-wifi
 
 # Docker Networking
 
+## How Docker implements networking
+
 * Containers can be connected to more than one network.
 * Containers can communicate with each other without any explicit links.
 * You can't delete a network if any container is connected to it.
+
+
+
+#### Docker uses&#x20;
+
+* **`network namespaces`** to isolate containers by creating a separate namespace for each container and&#x20;
+* **`virtual Ethernet pairs`** to connect containers together
+
+
 
 ## Default Networks
 
@@ -128,12 +139,7 @@ Docker has a **`built in DNS server`** (which always runs at address `127.0.0.11
 
 
 
-## How Docker implements networking
 
-Docker uses&#x20;
-
-* **`network namespaces`** to isolate containers by creating a separate namespace for each container and&#x20;
-* **`virtual Ethernet pairs`** to connect containers together
 
 
 

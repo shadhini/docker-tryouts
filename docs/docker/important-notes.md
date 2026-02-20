@@ -77,6 +77,6 @@ You can add as many as instances of the same image and configure a **load balanc
 
 **If an instance fails**,&#x20;
 
-1. you can destroy ut and launch a new one.
+1. you can destroy it and launch a new one.
 {% endhint %}
 

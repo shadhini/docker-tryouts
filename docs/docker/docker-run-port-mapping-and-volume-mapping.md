@@ -2,7 +2,7 @@
 icon: person-running
 ---
 
-# Docker Run
+# Docker Run, Port Mapping & Volume Mapping
 
 ## Tags
 
@@ -26,7 +26,7 @@ To pull a specific version of _redis_, you need to specify that version as a `ta
 {% hint style="info" %}
 To find information about available versions/tags of a particular image, look up the image at **`dockerhub.com`**
 
--> There, you will find all the supported tags in its description
+-> There, you will find all the supported tags and its description
 {% endhint %}
 
 
@@ -45,12 +45,10 @@ To find information about available versions/tags of a particular image, look up
 > * Then you must map the standard input of your host with **`-i`** flag
 > * To include the prompt as well, you need to attach the container's terminal with **`-t`** flag
 
-|                                                                                                                                                                                                                                                            Examples                                                                                                                                                                                                                                                            |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
+<table><thead><tr><th>Examples</th></tr></thead><tbody><tr><td><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu
 </code></pre><p>starts an Ubuntu container in interactive mode, opening a shell inside the container for user input</p><pre class="language-bash"><code class="lang-bash">docker run -it ubuntu bash
 </code></pre><p>runs an Ubuntu container and gives you a Bash shell</p><pre class="language-bash"><code class="lang-bash">docker exec -it &#x3C;CONTAINER_ID> bash
-</code></pre><p>attaches to the shell of an already running container<br></p> |
+</code></pre><p>attaches to the shell of an already running container<br></p></td></tr></tbody></table>
 
 
 
@@ -93,6 +91,8 @@ However, you **cannot map multiple containers to the same port** on the Docker h
 {% hint style="warning" %}
 You **cannot modify the port mapping of an existing container.**
 {% endhint %}
+
+
 
 ### Explanation: Port Mapping | Port Publishing
 
@@ -231,6 +231,8 @@ Suppose you log in to the containerized Jenkins server and make some configurati
 
 To resolve this issue, you can use **volume mapping**. By mapping the data volumes of both containers to the same directory on the Docker host, the configurations and data will be shared between them. This ensures that changes made in one container are accessible in the other.
 {% endhint %}
+
+
 
 [^1]: tag
 

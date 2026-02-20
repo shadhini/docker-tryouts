@@ -117,7 +117,7 @@ There are two types of mounts in Docker:
 
 2.  **Bind Mount:** Mounts a directory from any specific location on the Docker host.
 
-    [More on Bind Mount](../docker-run.md#volume-mapping)
+    [More on Bind Mount](../docker-run-port-mapping-and-volume-mapping.md#volume-mapping)
 
 
 
