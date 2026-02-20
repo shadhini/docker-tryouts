@@ -55,8 +55,7 @@ docker inspect <CONTAINER_ID/CONTAINER_NAME>
 
 
 
-\
-
+<br>
 
 [^1]: option to pass environment variables
 

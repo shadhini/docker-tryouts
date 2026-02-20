@@ -46,7 +46,7 @@ Monitoring and managing large-scale applications with thousands of containers ma
 
 ## Container Orchestration Solutions
 
-#### 1. Docker Swam from Docker
+#### 1. Docker Swarm from Docker
 
 * 🟢 easy to setup and get started
 * 🔴 lacks some advanced auto-scaling features

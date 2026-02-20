@@ -10,7 +10,7 @@
 ## Docker
 
 * [Important Notes](docker/important-notes.md)
-* [Docker Run](docker/docker-run.md)
+* [Docker Run, Port Mapping & Volume Mapping](docker/docker-run-port-mapping-and-volume-mapping.md)
 * [Docker Images](docker/docker-images.md)
 * [Environment Variables](docker/environment-variables.md)
 * [Docker Compose](docker/docker-compose.md)
@@ -26,7 +26,8 @@
 
 * [Docker Configurations](docker-commands/docker-configurations.md)
 * [Docker Commands](docker-commands/docker-commands.md)
-* [Docker Compose Commands](docker-commands/docker-compose-commands.md)
+* [Dockerfile Instructions](docker-commands/dockerfile-instructions.md)
+* [Docker Compose Commands & Features](docker-commands/docker-compose-commands-and-features.md)
 * [Hands On](docker-commands/hands-on/README.md)
   * [Basic Docker Commands](docker-commands/hands-on/basic-docker-commands.md)
   * [Docker Run](docker-commands/hands-on/docker-run.md)

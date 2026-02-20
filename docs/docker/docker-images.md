@@ -144,7 +144,7 @@ docker run <IMAGE_NAME> <COMMAND>
 docker run ubuntu sleep 1000
 ```
 
-#### Specifying command simply as a in a shell form
+#### Specifying command simply as in a shell form
 
 ```docker
 CMD <COMMAND> <PARAM1...>
