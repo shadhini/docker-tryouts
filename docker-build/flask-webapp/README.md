@@ -51,7 +51,7 @@ docker push shadhinij/simple-flask-webapp
 ```
 
 ### Test Cases Covered
-[x] Tested on `MacOS`
+- [x] Tested on `MacOS`
 
 
 
