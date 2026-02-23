@@ -28,5 +28,5 @@ CMD [&#x3C;PARAM1>, &#x3C;PARAM2> ...]
 #example
 ENTRYPOINT ["sleep"]
 CMD ["10"]
-</code></pre><ul><li>If you pass <strong>arguments</strong> with the <strong><code>docker run</code></strong> command, then the arguments specified with the <strong><code>CMD</code></strong> instruction will be <strong>replaced</strong> by them.</li></ul></td></tr></tbody></table>
+</code></pre><ul><li>If you pass <strong>arguments</strong> with the <strong><code>docker run</code></strong> command, then the arguments specified with the <strong><code>CMD</code></strong> instruction will be <strong>replaced</strong> by them.</li></ul></td></tr><tr><td valign="top"><strong><code>WORKDIR</code></strong></td><td valign="top">sets the working (current) directory for subsequent Dockerfile instructions and for the container at runtime unless overridden</td></tr></tbody></table>
 
