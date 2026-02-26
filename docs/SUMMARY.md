@@ -21,6 +21,7 @@
   * [Docker Storage Drivers and File Systems](docker/docker-architecture/docker-storage-drivers-and-file-systems.md)
 * [Docker Networking](docker/docker-networking.md)
 * [Docker Registry](docker/docker-registry.md)
+* [DHI: Docker Hardened Images](docker/dhi-docker-hardened-images.md)
 
 ## docker commands
 
