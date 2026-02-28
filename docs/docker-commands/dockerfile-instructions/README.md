@@ -17,7 +17,7 @@ RUN npm run build
 
 FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
-</code></pre><p><code>docker build --target builder -t my-frontend:builder .</code> </p><ul><li>stop after stage 1 and produce an image containing the builder filesystem</li></ul></td></tr><tr><td valign="top"><strong><code>RUN</code></strong></td><td valign="top">instructs to run a particular command on the base image</td></tr><tr><td valign="top"><strong><code>COPY</code></strong></td><td valign="top">copies files from the local system on to the docker image</td></tr><tr><td valign="top"><strong><code>ENTRYPOINT</code></strong></td><td valign="top"><p>specifies the program/command to run when the container starts</p><ul><li>you can pass any executable file as the ENTRYPOINT </li></ul><pre class="language-docker"><code class="lang-docker">ENTRYPOINT &#x3C;COMMAND>
+</code></pre><p><code>docker build --target builder -t my-frontend:builder .</code> </p><ul><li>stop after stage 1 and produce an image containing the builder filesystem</li></ul></td></tr><tr><td valign="top"><strong><code>RUN</code></strong></td><td valign="top"><p>instructs to run a particular command on the base image </p><ul><li>Each <code>RUN</code> instruction in Docker executes in a new shell instance, so variables defined in one <code>RUN</code> command are lost when that command completes.</li></ul></td></tr><tr><td valign="top"><strong><code>COPY</code></strong></td><td valign="top">copies files from the local system on to the docker image</td></tr><tr><td valign="top"><strong><code>ENTRYPOINT</code></strong></td><td valign="top"><p>specifies the program/command to run when the container starts</p><ul><li>you can pass any executable file as the ENTRYPOINT </li></ul><pre class="language-docker"><code class="lang-docker">ENTRYPOINT &#x3C;COMMAND>
 
 # example
 ENTRYPOINT ["bash"] ✅
@@ -51,112 +51,33 @@ RUN echo "Building on ${BASE_IMAGE}"
 
 FROM scratch
 # BASE_IMAGE not available here unless declared again 
-</code></pre><p></p></td></tr><tr><td valign="top"><strong><code>DEBIAN_FRONTEND</code></strong> env variable</td><td valign="top"><p>tells Debian/Ubuntu package tooling (debconf/dpkg) which UI frontend to use when configuring packages</p><ul><li>Common frontends: <code>dialog</code>, <code>readline</code> (interactive), <code>noninteractive</code>: used in automated builds</li><li><p><code>DEBIAN_FRONTEND=noninteractive</code> disables interactive prompts and forces packages to use defaults or previously-seeded debconf answers</p><ul><li>Without noninteractive, package installs that prompt will hang the build</li></ul></li></ul></td></tr></tbody></table>
+</code></pre><p></p></td></tr><tr><td valign="top"><strong><code>DEBIAN_FRONTEND</code></strong> env variable</td><td valign="top"><p>tells Debian/Ubuntu package tooling (debconf/dpkg) which UI frontend to use when configuring packages</p><ul><li>Common frontends: <code>dialog</code>, <code>readline</code> (interactive), <code>noninteractive</code>: used in automated builds</li><li><p><code>DEBIAN_FRONTEND=noninteractive</code> disables interactive prompts and forces packages to use defaults or previously-seeded debconf answers</p><ul><li>Without noninteractive, package installs that prompt will hang the build</li></ul></li></ul></td></tr><tr><td valign="top"></td><td valign="top"></td></tr></tbody></table>
 
 
 
-## Best Practices
-
-✅️ Give stages **descriptive names** with `AS` (builder, deps, test, final) for readability and easier `COPY --from` usage
-
-✅️ Keep the **final stage minimal** (only `COPY` what you need)
-
-* Multi-stage builds do not automatically transfer files between stages
-
-✅️ Use **`--target`** **in local development/CI** to build only up to a stage you care about (speeds iteration)
-
-✅️ **Re-declare `ARGs` in stages** where you need them (`ARG` before `FROM` can be used in `FROM`; re-declare after `FROM` to access inside that stage)
-
-✅️ **Do not pass secrets via `ARG`** — they can be recorded in image history
-
-* use **`BuildKit`** secrets or external secret management
-
-✅️ Be **explicit** when **copying**: avoid copying the whole builder filesystem if you only need one artifact
-
-#### ✅️ Use multiple FROMs to create multi-stage builds
-
-```docker
-# syntax=docker/dockerfile:1
-FROM maven AS build
-WORKDIR /app
-COPY . .
-RUN mvn package
-
-FROM tomcat
-COPY --from=build /app/target/file.war /usr/local/tomcat/webapps 
-```
-
-Each `FROM` starts an **isolated stage** so you can:
-
-* compile/build in one stage (with all build tools) and copy only the artifact into a minimal runtime image
-* cache dependencies in a dedicated stage
-* run tests or linters in separate stages
-* produce different final variants (debug vs slim) from the same Dockerfile
-* copy files from external images or other stages with `COPY --from=<name-or-index>`
-* **Benefits**:&#x20;
-  * smaller final images
-  * clearer separation of concerns
-  * faster iteration (docker build --target)&#x20;
-  * safer images (no build tools or credentials left behind)
-
-When to use multiple FROMs (common scenarios)
-
-* **Language build + runtime**: compile or transpile with a heavy SDK, then copy the binary/asset into a tiny runtime image (e.g., distroless, scratch, alpine)
-* **Dependency caching**: install dependencies in their own stage so builds are cached and faster when only source changes
-* **CI/test stages**: run unit tests, linters, or integration checks inside the Dockerfile stages so CI can build and run those steps in-container
-* **Multi-variant outputs**: create debug and production variants in one Dockerfile and select with `--target` or tag multiple outputs.
-* **Packaging or installer creation**: use one stage to build an installer/package and another to assemble or sign it
-* **Copying from external images**: bring artifacts from other published images: `COPY --from=some-image:tag` ...
-* **Cross-platform or multi-architecture workflows** (with `buildx`) where stages can help structure per-arch build steps
-
-When not to use multiple FROMs
-
-* **Simple apps** where build and runtime environments are identical and small — a single-stage image is simpler
-* **When you need every build-step filesystem state preserved** in the final image (multi-stage intentionally discards intermediate state)
+## ✅️ Best Practices
 
 
 
-#### 📁 Docker Container File System
+### 🗄️ Use multiple FROMs to create multi-stage builds
 
-<mark style="color:blue;">**Best Practices**</mark>
-
-✅ Follows the <mark style="color:green;">**Linux Filesystem Hierarchy (FHS)**</mark> and common Docker conventions.
-
-✅ Keeps **image size small** when you **delete installers** after installing.
-
-✅ Makes ownership, permissions and volumes **predictable** for runtime data and upgrades.
-
-* ✅  Create and switch to a non-root USER for running the app; chown files during build.
-
-✅ Copy installers (transient installers/packages) to a temp dir (build-time temp location), install, then **remove them in the same `RUN` layer** to avoid leaving them in earlier layers.
-
-✅ Avoid using `/root` for app files; reserve `/root` for the container user’s home if needed.
-
-<mark style="color:blue;">**When to mount vs copy into image**</mark>
-
-* **Mount** as a volume (`/var/lib/<app>` or `/srv/<app>`) when **data is large**, mutable or must survive container replacement.
-* Copy into image only for static seed data or small datasets that should be baked into the image.
-
-<mark style="color:blue;">**Permissions and user**</mark>
-
-* During build, set ownership with --chown or chown in the same layer.
-* Switch to a non-root user (USER) for runtime.
-* e.g:: `COPY --chown=appuser:appgroup` ... and then `USER appuser`
-
-<table data-header-hidden><thead><tr><th valign="top"></th><th valign="top"></th></tr></thead><tbody><tr><td valign="top"><p>build/install artifacts</p><ul><li>temporary during image build</li></ul></td><td valign="top"><code>/tmp</code> or <code>/usr/src/&#x3C;app></code></td></tr><tr><td valign="top"><p>third‑party application files / installed app </p><ul><li>so it’s easy to find  vendor software and doesn’t conflict with distro packages</li></ul></td><td valign="top"><code>/opt/&#x3C;app></code> or <code>/usr/local/&#x3C;app></code></td></tr><tr><td valign="top">runtime/persistent data</td><td valign="top"><code>/var/lib/&#x3C;app></code> or <code>/srv/&#x3C;app></code> — <strong>mount as a volume</strong> at runtime</td></tr><tr><td valign="top"><p>configuration files </p><ul><li>so system tools and admins can find it</li></ul></td><td valign="top"><p><code>/etc/&#x3C;app></code> </p><p>(or <code>/etc/default/&#x3C;app></code>, <code>/etc/&#x3C;app>/conf.d</code>)</p></td></tr><tr><td valign="top">Apt cache / archives (if you need to keep <code>.deb</code> files for some reason)</td><td valign="top"><p><code>/var/cache/apt/archives</code> </p><ul><li>but usually you should remove them</li></ul></td></tr></tbody></table>
+{% content-ref url="use-multiple-froms-to-create-multi-stage-builds.md" %}
+[use-multiple-froms-to-create-multi-stage-builds.md](use-multiple-froms-to-create-multi-stage-builds.md)
+{% endcontent-ref %}
 
 
 
-Example — application layout recommendations
+### 📁 Docker Container File System
 
-* /opt/myapp: application binaries and static bundled assets
-* /etc/myapp: configuration files
-* /var/lib/myapp: persistent runtime data (database files, uploads) — mount as Docker volume
-* /var/log/myapp: logs (or forward logs to stdout/stderr instead)
-
+{% content-ref url="docker-container-file-system.md" %}
+[docker-container-file-system.md](docker-container-file-system.md)
+{% endcontent-ref %}
 
 
 
+### 🇽🇾 Passing ENV variables, ARGs and Configurations&#x20;
 
-<br>
+{% content-ref url="passing-env-variables-args-and-configurations.md" %}
+[passing-env-variables-args-and-configurations.md](passing-env-variables-args-and-configurations.md)
+{% endcontent-ref %}
 
