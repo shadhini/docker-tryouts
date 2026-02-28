@@ -1,0 +1,33 @@
+# Environment files with real values
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Secrets
+secrets/*
+!secrets/.gitkeep
+!secrets/README.md
+
+# Runtime generated files
+runtime/
+*.log
+
+# Dependencies
+node_modules/
+app/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.tar

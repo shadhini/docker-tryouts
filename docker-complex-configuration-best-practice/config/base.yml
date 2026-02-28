@@ -1,0 +1,104 @@
+# Base configuration - defaults for all environments
+# Values with ${VAR} syntax will be substituted from environment variables
+
+application:
+  name: myapp
+  version: ${APP_VERSION:-1.0.0}
+  environment: ${ENVIRONMENT:-development}
+
+server:
+  host: ${SERVER_HOST:-0.0.0.0}
+  port: ${SERVER_PORT:-3000}
+  timeout_ms: ${SERVER_TIMEOUT:-30000}
+  body_limit: ${SERVER_BODY_LIMIT:-10mb}
+
+database:
+  type: postgresql
+  host: ${DB_HOST:-localhost}
+  port: ${DB_PORT:-5432}
+  name: ${DB_NAME:-myapp}
+  username: ${DB_USER:-postgres}
+  password: ${DB_PASSWORD}  # From secret, never has default
+  ssl: ${DB_SSL:-false}
+  pool:
+    min: ${DB_POOL_MIN:-2}
+    max: ${DB_POOL_MAX:-10}
+    idle_timeout_ms: ${DB_POOL_IDLE_TIMEOUT:-10000}
+  migrations:
+    auto_run: ${DB_MIGRATIONS_AUTO:-false}
+    table: schema_migrations
+
+redis:
+  mode: ${REDIS_MODE:-standalone}  # standalone | cluster | sentinel
+  hosts: ${REDIS_HOSTS:-localhost:6379}
+  password: ${REDIS_PASSWORD}  # From secret if needed
+  db: ${REDIS_DB:-0}
+  key_prefix: ${REDIS_KEY_PREFIX:-myapp:}
+  connection_timeout_ms: ${REDIS_TIMEOUT:-5000}
+  retry_attempts: ${REDIS_RETRY_ATTEMPTS:-3}
+
+logging:
+  level: ${LOG_LEVEL:-info}  # trace | debug | info | warn | error | fatal
+  format: ${LOG_FORMAT:-json}  # json | pretty
+  outputs:
+    - type: stdout
+    - type: file
+      path: ${LOG_FILE_PATH:-/var/log/app/app.log}
+      max_size_mb: ${LOG_FILE_MAX_SIZE:-100}
+      max_files: ${LOG_FILE_MAX_COUNT:-5}
+
+monitoring:
+  enabled: ${MONITORING_ENABLED:-true}
+  metrics:
+    enabled: ${METRICS_ENABLED:-true}
+    port: ${METRICS_PORT:-9090}
+    path: ${METRICS_PATH:-/metrics}
+  health_check:
+    enabled: ${HEALTH_CHECK_ENABLED:-true}
+    port: ${HEALTH_CHECK_PORT:-8080}
+    path: ${HEALTH_CHECK_PATH:-/health}
+  tracing:
+    enabled: ${TRACING_ENABLED:-false}
+    service_name: ${TRACING_SERVICE_NAME:-myapp}
+    endpoint: ${TRACING_ENDPOINT}
+
+api:
+  rate_limiting:
+    enabled: ${RATE_LIMIT_ENABLED:-true}
+    requests_per_minute: ${RATE_LIMIT_RPM:-100}
+    burst: ${RATE_LIMIT_BURST:-20}
+  cors:
+    enabled: ${CORS_ENABLED:-true}
+    origins: ${CORS_ORIGINS:-*}
+    methods: ${CORS_METHODS:-GET,POST,PUT,DELETE,OPTIONS}
+    credentials: ${CORS_CREDENTIALS:-true}
+  authentication:
+    jwt:
+      enabled: ${JWT_ENABLED:-true}
+      secret: ${JWT_SECRET}  # From secret
+      expiry: ${JWT_EXPIRY:-24h}
+      refresh_enabled: ${JWT_REFRESH_ENABLED:-true}
+
+external:
+  api_keys:
+    stripe: ${STRIPE_API_KEY}  # From secret
+    sendgrid: ${SENDGRID_API_KEY}  # From secret
+    aws_access_key: ${AWS_ACCESS_KEY_ID}  # From secret
+    aws_secret_key: ${AWS_SECRET_ACCESS_KEY}  # From secret
+  services:
+    payment_service:
+      url: ${PAYMENT_SERVICE_URL:-http://payment-service:8000}
+      timeout_ms: ${PAYMENT_SERVICE_TIMEOUT:-10000}
+    notification_service:
+      url: ${NOTIFICATION_SERVICE_URL:-http://notification-service:8000}
+      timeout_ms: ${NOTIFICATION_SERVICE_TIMEOUT:-5000}
+
+features:
+  new_ui: ${FEATURE_NEW_UI:-false}
+  beta_api: ${FEATURE_BETA_API:-false}
+  experimental_cache: ${FEATURE_EXP_CACHE:-false}
+
+cache:
+  enabled: ${CACHE_ENABLED:-true}
+  ttl_seconds: ${CACHE_TTL:-300}
+  max_entries: ${CACHE_MAX_ENTRIES:-1000}

@@ -1,0 +1,41 @@
+# Development environment overrides
+# These values override base.yml for local development
+
+server:
+  timeout_ms: 60000  # Longer timeout for debugging
+
+database:
+  ssl: false
+  pool:
+    min: 1
+    max: 5
+  migrations:
+    auto_run: true  # Auto-run migrations in dev
+
+redis:
+  mode: standalone
+  retry_attempts: 1
+
+logging:
+  level: debug
+  format: pretty  # Human-readable logs in dev
+
+monitoring:
+  enabled: true
+  tracing:
+    enabled: true
+    endpoint: http://jaeger:14268/api/traces
+
+api:
+  rate_limiting:
+    enabled: false  # No rate limiting in dev
+  cors:
+    origins: "*"  # Allow all origins in dev
+
+features:
+  new_ui: true
+  beta_api: true
+  experimental_cache: true
+
+cache:
+  ttl_seconds: 60  # Short TTL for testing

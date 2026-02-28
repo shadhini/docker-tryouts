@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["application", "server", "database", "logging"],
+  "properties": {
+    "application": {
+      "type": "object",
+      "required": ["name", "environment"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "environment": {
+          "type": "string",
+          "enum": ["development", "staging", "production"]
+        }
+      }
+    },
+    "server": {
+      "type": "object",
+      "required": ["host", "port"],
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "database": {
+      "type": "object",
+      "required": ["type", "host", "port", "name"],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string",
+          "minLength": 1
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ssl": {
+          "type": ["boolean", "string"]
+        },
+        "pool": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "required": ["level", "format"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["trace", "debug", "info", "warn", "error", "fatal"]
+        },
+        "format": {
+          "type": "string",
+          "enum": ["json", "pretty"]
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["boolean", "string"]
+      }
+    }
+  }
+}
