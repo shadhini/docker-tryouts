@@ -77,29 +77,38 @@ exec "$@"
 
 
 
-#### `:-` syntax
+#### `:-` syntax & `:=` syntax
 
-The `:-` syntax is a **default value operator** from shell variable expansion, commonly used in Docker and configuration files.
+The **`:-`** and **`:=`** syntax are  **default value operators** from shell variable expansion, commonly used in Docker and configuration files&#x20;
 
-{% code title="config/base.yml" %}
+* **docker-compose(`:-` syntax)** & **shell scripts(`:=` syntax)** automatically evaluate these values as defaults if environment variables with same name are not available
+* but YAML files won't automatically set them as defaults&#x20;
+
+{% code title="docker-compose.yml" %}
 ```yml
-application:
-  name: myapp
-  version: ${APP_VERSION:-1.0.0}
-  environment: ${ENVIRONMENT:-development}
-
-server:
-  host: ${SERVER_HOST:-0.0.0.0}
-  port: ${SERVER_PORT:-3000}
-  timeout_ms: ${SERVER_TIMEOUT:-30000}
-  body_limit: ${SERVER_BODY_LIMIT:-10mb}
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Pass build-time args from environment (compose substitutes from environment or .env)
+        APP_VERSION: ${APP_VERSION:-1.0.0}
+        API_URL: ${API_URL}
+    image: myapp:${APP_VERSION:-1.0.0}
+    env_file:
+      - .env                 # keep many runtime vars in one file
+    environment:
+      # Per-service overrides or values that need interpolation inline
+      - LOG_LEVEL=${LOG_LEVEL:-info}
 ```
 {% endcode %}
 
 In `${APP_VERSION:-1.0.0}`:
 
 * `APP_VERSION` is the environment variable name
-* `:-` means "use default if unset or empty"
+* `:-` / `:=` means "use default if environment variable with the same name is unset or empty"
 * `1.0.0` is the default value
 
 **Behavior:**
@@ -150,6 +159,8 @@ services:
 secrets:
   db_password:
     external: true          # or file: ./secrets/db_password.txt
+  file_password:
+    file: ./secrets/db_password.txt
 ```
 {% endcode %}
 
@@ -177,6 +188,30 @@ Pass build args when building the image:&#x20;
 ```shellscript
 docker build --build-arg APP_VERSION=1.2.3 --build-arg API_URL=https://... -t myimage .
 ```
+
+
+
+#### build-time vs runtime
+
+**Build-time** = during docker build
+
+* files copied into the image (e.g. a `.env` copied by Dockerfile) or ENV instructions become part of the image and are fixed in that image
+
+**Runtime** = when you run the container with docker run or docker-compose up
+
+* Docker/Compose injects environment variables (`environment`, `env_file`, `--env`, etc.) and mounts secrets (e.g. under /run/secrets)
+
+<mark style="color:blue;">**Precedence**</mark>&#x20;
+
+* Values set by environment: in **docker-compose.yml** or **docker run --env** have higher precedence than env\_file
+* Secrets that **entrypoint.sh** reads and exports at container start will be present in the environment for envsubst and can override image defaults
+* Image-baked `ENV` or a <kbd>.env</kbd> file copied into the image are **lowest precedence** — they act as defaults only if no runtime value is provided.
+
+<mark style="color:blue;">**How envsubst fits**</mark>
+
+* **`envsubst`** substitutes variables using the container's current environment at the moment it runs (i.e. runtime environment)
+* If **entrypoint.sh** sets fallback defaults (for example `ENVIRONMENT=${ENVIRONMENT:-development}`) before calling envsubst, those defaults are used when no runtime value was supplied
+* If a variable is not set at runtime and no fallback was exported, envsubst will substitute an empty string (unless your script sets defaults first)
 
 
 
@@ -257,7 +292,9 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 COPY . .
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# ENTRYPOINT is the script that runs on container start up, not supposed to run @ build time
+# Thus, place it in the last stage of multi-stage docker build
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"] 
 CMD ["node", "server.js"]
 ```
 {% endcode %}
@@ -266,34 +303,34 @@ CMD ["node", "server.js"]
 ```yml
 database:
   host: ${DB_HOST}
-  port: ${DB_PORT:-5432}
+  port: ${DB_PORT}
   name: ${DB_NAME}
   pool:
-    min: ${DB_POOL_MIN:-2}
-    max: ${DB_POOL_MAX:-10}
+    min: ${DB_POOL_MIN}
+    max: ${DB_POOL_MAX}
 
 redis:
   hosts:
     - ${REDIS_HOST_1}
     - ${REDIS_HOST_2}
-  cluster: ${REDIS_CLUSTER_MODE:-true}
+  cluster: ${REDIS_CLUSTER_MODE}
 
 api:
   rate_limit:
-    enabled: ${RATE_LIMIT_ENABLED:-true}
-    requests_per_minute: ${RATE_LIMIT_RPM:-100}
+    enabled: ${RATE_LIMIT_ENABLED}
+    requests_per_minute: ${RATE_LIMIT_RPM}
   
 logging:
-  level: ${LOG_LEVEL:-info}
-  format: ${LOG_FORMAT:-json}
+  level: ${LOG_LEVEL}
+  format: ${LOG_FORMAT}
   outputs:
     - type: stdout
     - type: file
-      path: ${LOG_FILE_PATH:-/var/log/app.log}
+      path: ${LOG_FILE_PATH}
 
 features:
-  new_ui: ${FEATURE_NEW_UI:-false}
-  beta_api: ${FEATURE_BETA_API:-false}
+  new_ui: ${FEATURE_NEW_UI}
+  beta_api: ${FEATURE_BETA_API}
 ```
 {% endcode %}
 
