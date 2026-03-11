@@ -250,6 +250,50 @@ exec "$@"
 ```
 {% endcode %}
 
+#### ❗How ENV variables actually persist; Get backed into the Image
+
+1. Anything you put in an `ENV` instruction or `ARG` instruction stays in the image metadata forever, since they are used at image build time.
+2. ✅ But environment variables set via an `ENTRYPOINT` instruction is set at runtime, so they don't get baked into the image layer.
+
+❌<br>
+
+#### **Docker BuildKit Secret Mounts** ✅ (Recommended)
+
+{% hint style="info" %}
+This is the **industry standard** for handling secrets during build.
+{% endhint %}
+
+{% code title="Dockerfile" %}
+```docker
+# syntax=docker/dockerfile:1
+
+FROM node:18 AS builder
+# Mount secret at build time (never persisted in layers)
+RUN --mount=type=secret,id=npm_token \
+    NPM_TOKEN=$(cat /run/secrets/npm_token) && \
+    npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN && \
+    npm install
+
+FROM node:18 AS runtime
+COPY --from=builder /app/node_modules ./node_modules
+# Secrets are NOT in this layer
+```
+{% endcode %}
+
+Build with:
+
+{% code title="bash" %}
+```bash
+docker build --secret id=npm_token,src=.npm_token .
+```
+{% endcode %}
+
+**Benefits:**
+
+* Secrets never stored in image layers
+* Can't be extracted from final image
+* Secure and auditable
+
 
 
 ## Handling Complex Configurations
