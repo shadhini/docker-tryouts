@@ -95,3 +95,7 @@ FROM scratch
 [passing-env-variables-args-and-configurations.md](passing-env-variables-args-and-configurations.md)
 {% endcontent-ref %}
 
+
+
+Use of Root , Non Root User
+

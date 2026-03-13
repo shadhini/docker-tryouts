@@ -21,6 +21,7 @@
   * [Docker Storage Drivers and File Systems](docker/docker-architecture/docker-storage-drivers-and-file-systems.md)
 * [Docker Networking](docker/docker-networking.md)
 * [Docker Registry](docker/docker-registry.md)
+* [Docker Image Delivery](docker/docker-image-delivery.md)
 * [DHI: Docker Hardened Images](docker/dhi-docker-hardened-images.md)
 
 ## docker commands
@@ -31,6 +32,7 @@
   * [Use multiple FROMs to create multi-stage builds](docker-commands/dockerfile-instructions/use-multiple-froms-to-create-multi-stage-builds.md)
   * [Docker Container File System](docker-commands/dockerfile-instructions/docker-container-file-system.md)
   * [Passing ENV variables, ARGs and Configurations](docker-commands/dockerfile-instructions/passing-env-variables-args-and-configurations.md)
+  * [Use of root vs non-root user](docker-commands/dockerfile-instructions/use-of-root-vs-non-root-user.md)
 * [Docker Compose Commands & Features](docker-commands/docker-compose-commands-and-features.md)
 * [Hands On](docker-commands/hands-on/README.md)
   * [Basic Docker Commands](docker-commands/hands-on/basic-docker-commands.md)

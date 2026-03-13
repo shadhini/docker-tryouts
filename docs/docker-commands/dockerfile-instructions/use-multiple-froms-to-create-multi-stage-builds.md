@@ -61,3 +61,54 @@ COPY --from=build /app/target/file.war /usr/local/tomcat/webapps
 * **Simple apps** where build and runtime environments are identical and small — a single-stage image is simpler
 * **When you need every build-step filesystem state preserved** in the final image (multi-stage intentionally discards intermediate state)
 
+#### <mark style="color:blue;">Naming Suggestions for Multiple Stages</mark>
+
+* `prepare` — general-purpose stage for copying files and fetching packages (recommended)
+* `deps` — when the stage’s primary job is installing dependency packages
+* `setup` — clear intent to configure environment and fetch artifacts
+* `bootstrap` — if it bootstraps the build environment (downloads toolchains, etc.)
+* `builder` — when this stage also compiles/builds artifacts (common convention)
+* `fetch` — when it only pulls/downloads external assets
+* `assets` — for copying static assets from host + fetching related packages
+* `runtime-deps` — when preparing runtime-only dependencies (separates from build deps)
+
+
+
+## Multi Stages with Multiple Entrypoints
+
+**`ENTRYPOINT ["/entrypoint3.sh"]` itself does NOT execute during build**, but if your script is being run via `RUN` or setting `ENV` variables, those will persist.
+
+{% code title="Dockerfile" %}
+```dockerfile
+FROM image1 as stage1
+ENTRYPOINT [entrypoint1.sh]
+CMD [/bin/bash]
+
+FROM image2 as stage2
+ENTRYPOINT [entrypoint2.sh]
+CMD [/bin/bash]
+
+FROM image3 as stage3
+ENTRYPOINT [entrypoint3.sh]
+CMD [/bin/bash]
+```
+{% endcode %}
+
+#### What happens when you run `docker run`
+
+When you execute `docker run <final-image>`, **only `entrypoint3.sh` gets executed**, assuming the final image is built from `stage3`.
+
+In a multi-stage Dockerfile, the rule of thumb is: The last one wins.&#x20;
+
+* When you run `docker run` on an image built from this Dockerfile, only the final stage (e.g: `stage3`) determines what actually happens.&#x20;
+* The previous stages are essentially temporary "workshops" used during the build process.
+
+<mark style="color:blue;">**Why Only the Last Stage?**</mark>
+
+1. **Multi-stage builds are sequential**: Each stage builds upon or uses artifacts from previous stages, but only the **last `FROM` instruction** determines the base image of the final output.
+2. **Earlier stages are discarded**: After the build completes, `stage1` and `stage2` exist only temporarily during the build process. They're not part of the final image unless you explicitly copy files from them using `COPY --from=stage1` or `COPY --from=stage2`.&#x20;
+   * But, even if you don't explicitly copy files from `stage1` and `stage2`, and if the build targets( i.e. ends in ) `stage2`, that case, `entrypoint2.sh` will be run upon calling `docker run`.
+3. **Only one ENTRYPOINT per image**: A Docker image can only have **one** `ENTRYPOINT` and **one** `CMD`. The final stage's instructions override all previous ones.
+
+<br>
+
