@@ -6,17 +6,59 @@ icon: square-list
 
 ## Docker Compose Commands
 
-<table><thead><tr><th valign="top">Docker Compose Command</th><th valign="top">Explanation</th></tr></thead><tbody><tr><td valign="top"><pre class="language-bash"><code class="lang-bash">docker compose version
-</code></pre></td><td valign="top">Check docker compose version</td></tr><tr><td valign="top"><pre class="language-bash"><code class="lang-bash">docker compose up
-</code></pre></td><td valign="top"><p>Build, create, and start Docker containers as defined in a <strong><code>docker-compose.yml</code></strong> file </p><ul><li>The <strong>directory name</strong> where you run the <code>docker compose up</code> command becomes the <strong>project name</strong>, and all objects created will have this <strong>project name prefixed</strong>.</li></ul></td></tr><tr><td valign="top"></td><td valign="top"></td></tr></tbody></table>
+```shellscript
+docker compose version
+```
+
+╰┈➤ check docker compose version
+
+***
+
+```bash
+docker compose up
+```
+
+╰┈➤ build, create, and start Docker containers as defined in a **`docker-compose.yml`** file&#x20;
+
+* The **directory name** where you run the `docker compose up` command becomes the **project name**, and all objects created will have this **project name prefixed**.
+
+***
+
+```bash
+docker compose run [OPTIONS] SERVICE [COMMAND] [ARGS...]
+```
+
+╰┈➤  this command is specifically designed for <mark style="color:blue;">**one-off tasks**</mark>&#x20;
+
+* used when you want to trigger a specific service to perform a single action—like running database migrations, executing a test suite, or opening an interactive shell
+  * **overrides CMD**: ignores the `CMD` instruction in your `Dockerfile` and runs your provided command instead
+  * **dependency startup**: by default, it starts any services linked via `depends_on` (unless you use `--no-deps`)
+  * **no port mapping**: it does not map ports to your host machine by default (to avoid conflicts with already running services)
+    * unless you explicitly add the `--service-ports` flag
+  * **interactive mode**: it automatically opens an interactive terminal (`-it`), making it perfect for debugging
+* ```bash
+  # opens an interactive shell for the app service and remove the container automatically once the command finishes
+  docker compose run --rm app sh
+
+  # running a specific script inside your 'app' service
+  docker compose run app python manage.py migrate
+  ```
+  * **`[OPTIONS]`**: flags — modify how the container runs
+    * `--rm`: Automatically removes the container once the command finishes (highly recommended to keep your system clean)
+      * `--name`: Gives this specific one-off container a custom name.
+  * **`SERVICE`**: This must match one of the service names listed in your `docker-compose.yml` (e.g:  `web`, `app`, `db`)
+  * **`[COMMAND]`**: The actual process you want to start (e.g: `sh`, `python`, `npm test`)
+  * **`[ARGS...]`**: Any extra arguments for that command (e.g: the name of the script you want Python to run)
+
+***
+
+
 
 ## Docker Compose  V2+ Features
 
 * creates a **dedicated bridged network** for the application
 * network takes care of DNS resolution
 * all containers within the application can reach each other using the service names given in the `docker-compose.yml` file — no need for links
-
-
 
 <table><thead><tr><th width="173.68359375" valign="top">Feature</th><th>Description</th></tr></thead><tbody><tr><td valign="top"><strong><code>depends_on</code></strong></td><td><p>used to specify a start up order for containers </p><pre class="language-yaml"><code class="lang-yaml">version: "2"
 services:
